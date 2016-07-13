@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC 
+"-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.syhorde.gametime.dao.BookingDao">
+
+<resultMap type="Booking" id="resultListBooking">
+	<result column="GS_BookingCode" property="bookingCode" />
+	<result column="GS_BookingName" property="bookingName" />
+</resultMap>
+
+<select id="getBooking" parameterType="java.util.Map" resultMap="resultListBooking">
+	SELECT GS_BookingCode, GS_BookingBatch, GS_BookingName, GS_BookingStartDate, GS_BookingEndDate, GS_BookingDate, GS_BookingUserCode, GS_BookingUserName, GS_BookingPrice, GS_ProductsCode, GS_ProductItemCode, GS_BookingNote, GS_BookingType, GS_BookingStatus
+	From gs_booking
+	WHERE GS_BookingUserCode = #{userCode} AND GS_BookingDate >= #{date} AND GS_BookingBatch = #{batch}
+</select> 
+
+<insert id="gnrtBooking" parameterType="java.util.List">
+	INSERT INTO gs_booking
+	(GS_BookingCode, GS_BookingBatch, GS_BookingName, GS_BookingStartDate, GS_BookingEndDate, GS_BookingDate, GS_BookingUserCode, GS_BookingUserName, GS_BookingPrice, GS_ProductsCode, GS_ProductItemCode, GS_BookingNote, GS_BookingType, GS_BookingStatus)
+	VALUES
+	<foreach item="item" collection="list" open="" separator="," close="">
+		(#{item.bookingCode}, #{item.bookingBatch}, #{item.bookingName}, #{item.bookingStartDate}, #{item.bookingEndDate}, #{item.bookingDate}, #{item.userCode}, #{item.userName},, #{item.bookingPrice}, #{item.productCode}, #{item.productItemCode}, #{item.bookingNote}, #{item.bookingType}, , #{item.GS_BookingStatus})
+	</foreach>
+</insert>
+
+<select id="getProductPrice" parameterType="java.util.Map" resultType="double">
+	SELECT GS_ProductsItemPrice
+	FROM gs_productsitem
+	WHERE GS_ProductsCode = #{productCode} AND GS_ProductsItemSeq = #{ProductItemCode}
+</select>
+
+<select id="getGoodsCode" parameterType="java.util.Map" resultType="java.util.List">
+	SELECT GS_GoodsCode
+	FROM gs_goods
+	WHERE GS_ProductsCode = #{productCode} AND GS_ProductsItemSeq = #{ProductItemCode}
+	LIMIT #{num}
+</select>
+
+<update id="updateGoods" parameterType="java.util.List">
+	UPDATE gs_goods
+	SET GS_GoodsStatus = '10'
+	WHERE GS_GoodsCode IN 
+	<foreach collection="list" item="item" index="index" open="(" separator="," close=")" >  
+        #{item}  
+    </foreach>		
+</update>
+
+</mapper>
