@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC 
+"-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.syhorde.gametime.dao.BookingDao">
+
+<resultMap type="Booking" id="resultListBooking">
+	<result column="GS_OrderCode" property="orderCode" />
+	<result column="GS_OrderBatch" property="orderBatch" />
+	<result column="GS_OrderName" property="orderName" />
+	<result column="GS_OrderStartDate" property="orderStartDate" />
+	<result column="GS_OrderEndDate" property="orderEndDate" />
+	<result column="GS_OrderDate" property="orderDate" />
+	<result column="GS_OrderUserCode" property="userCode" />
+	<result column="GS_OrderUserName" property="userName" />
+	<result column="GS_GoodsCode" property="goodsCode" />
+	<result column="GS_OrderPrice" property="OrderPrice" />
+	<result column="GS_OrderNum" property="OrderNum" />
+	<result column="GS_CouponCode" property="CouponCode" />
+	<result column="GS_AddressCode" property="AddressCode" />
+	<result column="GS_OrderPriceCut" property="OrderPriceCut" />
+	<result column="GS_ProductsCode" property="ProductCode" />
+	<result column="GS_ProductItemCode" property="ProductItemCode" />
+	<result column="GS_OrderType" property="OrderType" />
+	<result column="GS_OrderNote" property="OrderNote" />
+	<result column="GS_OrderStatus" property="OrderStatus" />
+</resultMap>
+
+
+<insert id="gnrtOrder" parameterType="java.util.List">
+	INSERT INTO gs_booking
+	(GS_OrderCode, GS_OrderBatch, GS_OrderName, GS_OrderStartDate, GS_OrderEndDate, GS_OrderDate, GS_OrderUserCode, GS_OrderUserName, GS_GoodsCode, GS_OrderPriceCut, GS_CouponCode, GS_AddressCode, GS_OrderPrice, GS_ProductsCode, GS_ProductItemCode, GS_OrderNum, GS_OrderType, GS_OrderNote, GS_OrderStatus)
+	VALUES
+	<foreach item="item" collection="list" open="" separator="," close="">
+		(#{item.orderCode}, #{item.orderBatch}, #{item.orderName}, #{item.orderStartDate}, #{item.orderEndDate}, #{item.orderDate}, #{item.userCode}, #{item.userName}, #{item.goodsCode}, #{item.OrderPriceCut}, #{item.CouponCode}, #{item.AddressCode}, #{item.OrderPrice}, #{item.ProductCode}, #{item.ProductItemCode}, #{item.OrderNum}, #{item.OrderType}, #{item.OrderNote}, #{item.OrderStatus})
+	</foreach>
+</insert>
+
+<select id="getOrder" parameterType="java.util.Map" resultMap="resultListBooking">
+	SELECT GS_OrderCode, GS_OrderBatch, GS_OrderName, GS_OrderStartDate, GS_OrderEndDate, GS_OrderDate, GS_OrderUserCode, GS_OrderUserName, GS_GoodsCode, GS_OrderPriceCut, GS_CouponCode, GS_AddressCode, GS_OrderPrice, GS_ProductsCode, GS_ProductItemCode, GS_OrderNum, GS_OrderType, GS_OrderNote, GS_OrderStatus
+	FROM　gs_order
+	WHERE GS_OrderBatch = #{OrderBatch} AND GS_OrderUserCode = #{UserCode}
+</select>
+
+<delete id="deleteOrders" parameterType="String">
+	DELETE FROM gs_order
+	WHERE GS_OrderBatch = #{OrderBatch} AND GS_OrderStatus != 'R' AND GS_OrderStatus ! = 'P'
+</delete>
+
+<delete id="deleteOrder" parameterType="String">
+	DELETE FROM gs_order
+	WHERE GS_OrderCode = #{OrderCode} AND GS_OrderStatus != 'R' AND GS_OrderStatus ! = 'P'
+</delete>
+ 	
+<update id="updateOrdersStatusToPay" parameterType="java.util.Map" >
+	UPDATE gs_order
+	SET GS_OrderStatus = 'P'
+	WHERE GS_OrderBatch = #{OrderBatch}
+</update>
+ 
+ <update id="updateOrderStatus" parameterType="java.util.Map" >
+	UPDATE gs_order
+	SET GS_OrderStatus = #{OrderStatus}
+	WHERE GS_OrderCode = #{OrderCode} AND GS_OrderUserCode = #{UserCode}
+</update>
+ 
+</mapper>

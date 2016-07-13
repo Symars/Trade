@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC 
+"-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.syhorde.gametime.dao.UserVIPDao">
+
+<resultMap type="UserVIP" id="resultListUserVIP">
+	<result column="VIP_Code" property="vipCode" />
+	<result column="GS_UserCode" property="userCode" />
+	<result column="VIP_StartDate" property="startDate" />
+	<result column="VIP_EndDate" property="endDate" />
+</resultMap>
+
+
+<select id="getUserVIP" parameterType="String" resultType="int">
+	SELECT COUNT(1)
+	FROM gs_vip
+	WHERE GS_UserCode = #{userCode} AND VIP_EndDate > CURRENT_TIMESTAMP()
+</select>
+
+<select id="getCurrentRentOrder" parameterType="String" resultType="int">
+	SELECT COUNT(1)
+	FROM gs_order
+	WHERE GS_OrderUserCode = #{userCode} AND GS_OrderPrice = 0 AND GS_OrderType = 'R' AND GS_OrderStatus = 'R'
+</select>
+
+</mapper>
