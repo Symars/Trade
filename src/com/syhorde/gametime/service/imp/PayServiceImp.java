@@ -1,8 +1,11 @@
 package com.syhorde.gametime.service.imp;
 
 import java.io.UnsupportedEncodingException;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -11,15 +14,32 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.syhorde.gametime.dao.MyCouponDao;
+import com.syhorde.gametime.dao.MyWalletDao;
 import com.syhorde.gametime.dao.OrderDao;
 import com.syhorde.gametime.pay.alipay.AlipayNotify;
 import com.syhorde.gametime.service.PayService;
+import com.syhorde.gametime.util.StringUtil;
+import com.syhorde.gametime.vo.MyCoupon;
+import com.syhorde.gametime.vo.MyWallet;
+import com.syhorde.gametime.vo.Order;
 
 @Service("payService")
 public class PayServiceImp implements PayService {
 	
 	@Autowired
 	private OrderDao orderDao;
+	@Autowired
+	private MyWalletDao myWalletDao;
+	@Autowired
+	private MyCouponDao myCouponDao;
+	
+	private List<Order> orders;
+	
+	private MyWallet myWallet;
+	
+	private MyCoupon myCoupon;
+	
 
 	@SuppressWarnings({ "unused", "rawtypes" })
 	@Transactional
@@ -45,7 +65,7 @@ public class PayServiceImp implements PayService {
 		//获取支付宝的通知返回参数，可参考技术文档中页面跳转同步通知参数列表(以下仅供参考)//
 		//商户订单号
 
-		String out_trade_no = new String(request.getParameter("out_trade_no").getBytes("ISO-8859-1"),"UTF-8");
+		String orderBatch = new String(request.getParameter("out_trade_no").getBytes("ISO-8859-1"),"UTF-8");
 
 		//支付宝交易号
 
@@ -84,6 +104,10 @@ public class PayServiceImp implements PayService {
 		
 		String business_scene = new String(request.getParameter("business_scene").getBytes("ISO-8859-1"),"UTF-8");
 		
+		//userCode
+		
+		String userCode = new String(request.getParameter("extra_common_param").getBytes("ISO-8859-1"),"UTF-8");
+				
 		//获取支付宝的通知返回参数，可参考技术文档中页面跳转同步通知参数列表(以上仅供参考)//
 
 		if(AlipayNotify.verify(params)){//验证成功
@@ -118,7 +142,61 @@ public class PayServiceImp implements PayService {
 				//4。1.根据订单购交易类型（购买，租赁）冻结款项或是扣款(新增用户消费记录，或更改用户钱包冻结款)
 				//4.2.根据交易类型，更改订单状态
 				//4.3.根据订单类型，生成发货单，另购买二手和会员申请无需发货单
-				orderDao.updateOrdersStatusToPay(out_trade_no);
+				
+				/**
+				 * 获取当前时间
+				 */
+				String now = LocalDateTime.now().format(DateTimeFormatter.ISO_DATE_TIME);
+				
+				orders = orderDao.getOrderByBatch(orderBatch);
+				
+				double price = 0.00;
+				
+				double rprice = 0.00;
+				
+				String couponCode = "";
+				
+				for(Order order: orders) {
+					
+					price += (order.getOrderPrice() * order.getOrderNum());
+					
+					String type = order.getOrderType();
+					
+					if (type.equals("R")) {
+						rprice += (order.getOrderPrice() * order.getOrderNum());
+					}
+					
+					couponCode = order.getCouponCode();
+				}
+				
+				/**
+				 * 使用优惠券
+				 */
+				if(StringUtil.isNotEmpty(couponCode)) {
+					/**
+					 * 总价减去优惠券价格
+					 */
+					myCoupon = myCouponDao.getMyCouponByCode(couponCode); 
+					price -= myCoupon.getCouponAmount();
+				}
+				
+				myWallet = myWalletDao.getMyWallet(userCode);
+				
+				/**
+				 * 通过钱包扣款
+				 */
+				double balance = myWallet.getWalletAmount() + Double.valueOf(total_fee) - price;
+				
+				myWallet.setWalletAmount(balance);
+				myWallet.setWalletPledge(rprice);
+				myWallet.setWalletUpdDate(now);
+				
+				myWalletDao.updateMyWallet(myWallet);
+				
+				/**
+				 * 更改订单为支付状态
+				 */
+				orderDao.updateOrdersStatusToPay(orderBatch);
 			}
 			
 

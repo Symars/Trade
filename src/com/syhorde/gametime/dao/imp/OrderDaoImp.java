@@ -37,6 +37,13 @@ public class OrderDaoImp implements OrderDao {
 	}
 
 	@Override
+	public List<Order> getOrderByBatch(String batch) {
+		// TODO Auto-generated method stub
+		SqlSession session = sqlSessionFactory.openSession();
+		return session.selectList("com.syhorde.gametime.dao.OrderDao.getOrderByBatch", batch);
+	}
+
+	@Override
 	public void deleteOrder(String orderCode) {
 		// TODO Auto-generated method stub
 		SqlSession session = sqlSessionFactory.openSession();

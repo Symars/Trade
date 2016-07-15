@@ -5,8 +5,8 @@ import java.util.Map;
 
 public class AlipayApi {
 	
-	public static String getUrl(String out_trade_no, String subject, String total_fee, String body) {
-		return AlipaySubmit.buildRequestUrl(pushParams(out_trade_no, subject, total_fee, body));
+	public static String getUrl(String out_trade_no, String subject, String total_fee, String body, String userCode) {
+		return AlipaySubmit.buildRequestUrl(pushParams(out_trade_no, subject, total_fee, body, userCode));
 	}
 	
 	/**
@@ -17,7 +17,7 @@ public class AlipayApi {
 	 * @param body			商品描述，可空
 	 * @return
 	 */
-	private static Map<String, String> pushParams(String out_trade_no, String subject, String total_fee, String body){
+	private static Map<String, String> pushParams(String out_trade_no, String subject, String total_fee, String body, String userCode){
 		
 //		 //商户订单号，商户网站订单系统中唯一订单号，必填
 //       String out_trade_no = "tes123qwdfasv23sdx";
@@ -42,6 +42,7 @@ public class AlipayApi {
 		sParaTemp.put("return_url", AlipayConfig.return_url);
 		sParaTemp.put("anti_phishing_key", AlipayConfig.anti_phishing_key);
 		sParaTemp.put("exter_invoke_ip", AlipayConfig.exter_invoke_ip);
+		sParaTemp.put("extra_common_param", userCode);
 		sParaTemp.put("out_trade_no", out_trade_no);
 		sParaTemp.put("subject", subject);
 		sParaTemp.put("total_fee", total_fee);

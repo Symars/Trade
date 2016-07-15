@@ -8,4 +8,6 @@ public interface OrderService {
 	public String getOrder(HttpServletRequest request);
 	
 	public String deleteOrder(HttpServletRequest request);
+
+	public String payOrder(HttpServletRequest request);
 }

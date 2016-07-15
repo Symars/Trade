@@ -28,4 +28,11 @@ public class MyWalletDaoImp implements MyWalletDao{
 		session.update("com.syhorde.gametime.dao.MyWalletDao.updateMyWallet", myWallet);
 		session.commit();
 	}
+	@Override
+	public void insertMyWallet(MyWallet myWallet) {
+		// TODO Auto-generated method stub
+		SqlSession session = sqlSessionFactory.openSession();
+		session.insert("com.syhorde.gametime.dao.MyWalletDao.insertMyWallet", myWallet);
+		session.commit();
+	}
 }

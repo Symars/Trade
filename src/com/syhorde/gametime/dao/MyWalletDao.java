@@ -6,4 +6,6 @@ public interface MyWalletDao {
 	public MyWallet getMyWallet(String userCode);
 	
 	public void updateMyWallet(MyWallet myWallet);
+	
+	public void insertMyWallet(MyWallet myWallet);
 }

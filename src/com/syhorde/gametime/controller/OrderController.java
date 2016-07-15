@@ -70,4 +70,19 @@ public class OrderController {
 		
 	}
 	
+	/**
+	 * 删除订单
+	 * @param request
+	 * @param response
+	 * @throws IOException
+	 */
+	@RequestMapping(value = "/GI_PayOrder.trade", method = {RequestMethod.GET,RequestMethod.POST})  
+	@ResponseBody
+	public void payOrder(HttpServletRequest request, HttpServletResponse response) throws IOException {
+		
+        response.setCharacterEncoding(DicCons.CHARACTER_ENCODE_DEFAULT);
+        response.setContentType(DicCons.CONTENT_TYPE_DEFAULT);  
+		response.getWriter().print(orderService.payOrder(request));
+		
+	}
 }

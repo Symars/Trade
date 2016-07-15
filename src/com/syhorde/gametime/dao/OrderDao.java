@@ -11,6 +11,8 @@ public interface OrderDao {
 	
 	public List<Order> getOrder(Map<String, Object> params);
 	
+	public List<Order> getOrderByBatch(String batch);
+	
 	public void deleteOrders(String batch);
 
 	public void deleteOrder(String orderCode);

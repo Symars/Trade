@@ -27,5 +27,17 @@ public class MyCouponDaoImp implements MyCouponDao{
 		// TODO Auto-generated method stub
 		SqlSession session = sqlSessionFactory.openSession();
 		return session.selectOne("com.syhorde.gametime.dao.MyCouponDao.getMyCouponByCode", myCouponCode);
+	}
+	@Override
+	public void updateMyCouponStatusByCode(String myCouponCode) {
+		// TODO Auto-generated method stub
+		SqlSession session = sqlSessionFactory.openSession();
+		session.update("com.syhorde.gametime.dao.MyCouponDao.updateMyCouponStatusByCode", myCouponCode);
+	}
+	@Override
+	public MyCoupon getAllMyCouponByCode(String myCouponCode) {
+		// TODO Auto-generated method stub
+		SqlSession session = sqlSessionFactory.openSession();
+		return session.selectOne("com.syhorde.gametime.dao.MyCouponDao.getAllMyCouponByCode", myCouponCode);
 	}	
 }

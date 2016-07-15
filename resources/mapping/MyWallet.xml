@@ -25,4 +25,8 @@
 	WHERE GS_UserCode = #{userCode}
 </update>
 
+<insert id="insertMyWallet" parameterType="MyWallet">
+	INSERT INTO gs_userwallet(Wallet_Code, GS_UserCode, Wallet_Amount, Wallet_Pledge, Wallet_CrtDate, Wallet_UpdDate) VALUE
+	( #{walletCode}, #{userCode}, #{walletAmount}, #{walletPledge}, #{walletCrtDate}, #{walletUpdDate} )
+</insert>
 </mapper>

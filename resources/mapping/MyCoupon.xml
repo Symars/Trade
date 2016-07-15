@@ -28,4 +28,15 @@
 	 WHERE GS_MyCouponCode = #{couponCode} AND GS_MyCouponType = 'T' AND GS_MyCouponEndDate >= CURRENT_TIMESTAMP()
 </select> 
 
+<select id="getAllMyCouponByCode" parameterType="String" resultMap="resultListMyCoupon">
+	SELECT GS_MyCouponCode, GS_UserCode, GS_UserName, GS_CouponCode, GS_CouponPrice, GS_MyCouponEndDate, GS_MyCouponCrtDate, GS_MyCouponNote, GS_MyCouponType
+	 From gs_mycoupon, gs_coupon
+	 WHERE GS_MyCouponCode = #{couponCode}
+</select> 
+
+<update id="updateMyCouponStatusByCode">
+	UPDATE gs_mycoupon
+	SET GS_MyCouponType = 'F'
+	WHERE GS_MyCouponCode = #{myCouponCode}
+</update>
 </mapper>

@@ -42,6 +42,12 @@
 	WHERE GS_OrderBatch = #{OrderBatch} AND GS_OrderUserCode = #{UserCode}
 </select>
 
+<select id="getOrderByBatch" parameterType="java.util.Map" resultMap="resultListBooking">
+	SELECT GS_OrderCode, GS_OrderBatch, GS_OrderName, GS_OrderStartDate, GS_OrderEndDate, GS_OrderDate, GS_OrderUserCode, GS_OrderUserName, GS_GoodsCode, GS_OrderPriceCut, GS_CouponCode, GS_AddressCode, GS_OrderPrice, GS_ProductsCode, GS_ProductItemCode, GS_OrderNum, GS_OrderType, GS_OrderNote, GS_OrderStatus
+	FROM　gs_order
+	WHERE GS_OrderBatch = #{OrderBatch}
+</select>
+
 <delete id="deleteOrders" parameterType="String">
 	DELETE FROM gs_order
 	WHERE GS_OrderBatch = #{OrderBatch} AND GS_OrderStatus != 'R' AND GS_OrderStatus ! = 'P'
