@@ -19,5 +19,10 @@
 	 WHERE GS_UserCode = #{userCode}
 </select> 
 
+<update id="updateMyWallet" parameterType="MyWallet">
+	UPDATE gs_userwallet
+	SET Wallet_Amount = #{walletAmount}, Wallet_Pledge = #{walletPledge}, Wallet_UpdDate = #{walletUpdDate}
+	WHERE GS_UserCode = #{userCode}
+</update>
 
 </mapper>

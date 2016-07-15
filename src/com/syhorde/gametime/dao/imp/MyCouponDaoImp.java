@@ -1,4 +1,6 @@
 package com.syhorde.gametime.dao.imp;
+import java.util.List;
+
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,10 +18,14 @@ public class MyCouponDaoImp implements MyCouponDao{
 		this.sqlSessionFactory = sqlSessionFactory;
 	}
 	@Override
-	public  MyCoupon getMyCoupon(String userCode){
+	public  List<MyCoupon> getMyCoupon(String userCode){
 		SqlSession session = sqlSessionFactory.openSession();
-		return session.selectOne("com.syhorde.gametime.dao.MyCouponDao.getMyCoupon", userCode);
+		return session.selectList("com.syhorde.gametime.dao.MyCouponDao.getMyCoupon", userCode);
 	}
-	
-
+	@Override
+	public MyCoupon getMyCouponByCode(String myCouponCode) {
+		// TODO Auto-generated method stub
+		SqlSession session = sqlSessionFactory.openSession();
+		return session.selectOne("com.syhorde.gametime.dao.MyCouponDao.getMyCouponByCode", myCouponCode);
+	}	
 }

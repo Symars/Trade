@@ -12,7 +12,7 @@ public class MyCoupon {
 	@SerializedName("CouponCode") 
 	private String CouponCode;
 	@SerializedName("MyCouponAmount")
-	private String MyCouponCount;
+	private double CouponAmount;
 	@SerializedName("MyCouponenddate")
 	private String MyCouponEndDate;
 	@SerializedName("MyCouponcrtdate")
@@ -21,59 +21,114 @@ public class MyCoupon {
 	private String MyCouponNote;
 	@SerializedName("MyCouponState")
 	private String MyCouponType;
-	public String getMyCouponCode(){
+	/**
+	 * @return the myCouponCode
+	 */
+	public String getMyCouponCode() {
 		return MyCouponCode;
 	}
-	public void setMyCouponCode(String MyCouponCode){
-		this.MyCouponCode=MyCouponCode;
+	/**
+	 * @param myCouponCode the myCouponCode to set
+	 */
+	public void setMyCouponCode(String myCouponCode) {
+		MyCouponCode = myCouponCode;
 	}
-	public String getUserCode(){
+	/**
+	 * @return the userCode
+	 */
+	public String getUserCode() {
 		return UserCode;
 	}
-	public void setUserCode(String UserCode){
-		this.UserCode=UserCode;
+	/**
+	 * @param userCode the userCode to set
+	 */
+	public void setUserCode(String userCode) {
+		UserCode = userCode;
 	}
-	public String getUserName(){
+	/**
+	 * @return the userName
+	 */
+	public String getUserName() {
 		return UserName;
 	}
-	public void setUserName(String UserName){
-		this.UserName=UserName;
+	/**
+	 * @param userName the userName to set
+	 */
+	public void setUserName(String userName) {
+		UserName = userName;
 	}
-	public String getCouponCode(){
+	/**
+	 * @return the couponCode
+	 */
+	public String getCouponCode() {
 		return CouponCode;
 	}
-	public void setCouponCode(String CouponCode){
-		this.CouponCode=CouponCode;
+	/**
+	 * @param couponCode the couponCode to set
+	 */
+	public void setCouponCode(String couponCode) {
+		CouponCode = couponCode;
 	}
-	public String getMyCouponCount(){
-		return MyCouponCount;
+	/**
+	 * @return the couponAmount
+	 */
+	public double getCouponAmount() {
+		return CouponAmount;
 	}
-	public void setMyCouponCount(String MyCouponCount){
-		this.MyCouponCount=MyCouponCount;
+	/**
+	 * @param couponAmount the couponAmount to set
+	 */
+	public void setCouponAmount(double couponAmount) {
+		CouponAmount = couponAmount;
 	}
-	public String getMyCouponEndDate(){
+	/**
+	 * @return the myCouponEndDate
+	 */
+	public String getMyCouponEndDate() {
 		return MyCouponEndDate;
 	}
-	public void setMyCouponEndDate(String MyCouponEndDate){
-		this.MyCouponEndDate=MyCouponEndDate;
+	/**
+	 * @param myCouponEndDate the myCouponEndDate to set
+	 */
+	public void setMyCouponEndDate(String myCouponEndDate) {
+		MyCouponEndDate = myCouponEndDate;
 	}
-	public String getMyCouponCrtDate(){
+	/**
+	 * @return the myCouponCrtDate
+	 */
+	public String getMyCouponCrtDate() {
 		return MyCouponCrtDate;
 	}
-	public void setMyCouponCrtDate(String MyCouponCrtDate){
-		this.MyCouponCrtDate=MyCouponCrtDate;
+	/**
+	 * @param myCouponCrtDate the myCouponCrtDate to set
+	 */
+	public void setMyCouponCrtDate(String myCouponCrtDate) {
+		MyCouponCrtDate = myCouponCrtDate;
 	}
-	public String getMyCouponNote(){
+	/**
+	 * @return the myCouponNote
+	 */
+	public String getMyCouponNote() {
 		return MyCouponNote;
 	}
-	public void setMyCouponNote(String MyCouponNote){
-		this.MyCouponNote=MyCouponNote;
+	/**
+	 * @param myCouponNote the myCouponNote to set
+	 */
+	public void setMyCouponNote(String myCouponNote) {
+		MyCouponNote = myCouponNote;
 	}
-	public String getMyCouponType(){
+	/**
+	 * @return the myCouponType
+	 */
+	public String getMyCouponType() {
 		return MyCouponType;
 	}
-	public void setMyCouponType(String MyCouponType){
-		this.MyCouponType=MyCouponType;
+	/**
+	 * @param myCouponType the myCouponType to set
+	 */
+	public void setMyCouponType(String myCouponType) {
+		MyCouponType = myCouponType;
 	}
+	
 	
 }

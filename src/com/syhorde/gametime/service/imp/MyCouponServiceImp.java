@@ -1,5 +1,6 @@
 package com.syhorde.gametime.service.imp;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -19,7 +20,7 @@ public class MyCouponServiceImp implements MyCouponService{
 	@Autowired
 	private MyCouponDao myCouponDao;
 	
-	private MyCoupon myCoupon;
+	private List<MyCoupon> myCoupon;
 	
 	@Override
 	public String getMyCoupon(HttpServletRequest request){

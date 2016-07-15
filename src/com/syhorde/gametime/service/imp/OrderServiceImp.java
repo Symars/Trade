@@ -10,8 +10,11 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.syhorde.gametime.dao.BookingDao;
+import com.syhorde.gametime.dao.MyCouponDao;
+import com.syhorde.gametime.dao.MyWalletDao;
 import com.syhorde.gametime.dao.OrderDao;
 import com.syhorde.gametime.json.JsonBuilder;
 import com.syhorde.gametime.pay.alipay.AlipayApi;
@@ -21,6 +24,8 @@ import com.syhorde.gametime.util.DicCons;
 import com.syhorde.gametime.util.GUID;
 import com.syhorde.gametime.util.StringUtil;
 import com.syhorde.gametime.vo.Booking;
+import com.syhorde.gametime.vo.MyCoupon;
+import com.syhorde.gametime.vo.MyWallet;
 import com.syhorde.gametime.vo.Order;
 
 @Service("orderService")
@@ -30,6 +35,14 @@ public class OrderServiceImp implements OrderService {
 	private OrderDao orderDao;
 	@Autowired
 	private BookingDao bookingDao;
+	@Autowired
+	private MyCouponDao myCouponDao;
+	@Autowired
+	private MyWalletDao myWalletDao;
+	
+	private MyCoupon myCoupon;
+	
+	private MyWallet myWallet;
 	
 	private List<Order> orders;
 
@@ -40,6 +53,7 @@ public class OrderServiceImp implements OrderService {
 	/**
 	 * 生成订单
 	 */
+	@Transactional
 	@Override
 	public String gnrtOrder(HttpServletRequest request) {
 		// TODO Auto-generated method stub
@@ -54,7 +68,7 @@ public class OrderServiceImp implements OrderService {
 			String userCode = request.getParameter("userCode");
 			String addressCode = request.getParameter("AddressCode");
 			String couponCode = request.getParameter("CouponCode");
-			String payWay = request.getParameter("PayWay");
+//			String payWay = request.getParameter("PayWay");
 			String note = request.getParameter("Note");
 			
 			Map<String, Object> params = new HashMap<String, Object>();
@@ -75,7 +89,9 @@ public class OrderServiceImp implements OrderService {
 			 */
 			String batch = GUID.getUUID();
 			
-			Double price = 0.00;
+			double price = 0.00;
+			
+			double rprice = 0.00; 
 			
 			StringBuffer subject = new StringBuffer();
 
@@ -124,7 +140,13 @@ public class OrderServiceImp implements OrderService {
 				
 				order.setAddressCode(addressCode);
 				
-				order.setOrderType(booking.getBookingType());
+				String type = booking.getBookingType();
+				
+				if (type.equals("R")) {
+					rprice += (booking.getBookingPrice() * booking.getBookingNum());
+				}
+				
+				order.setOrderType(type);
 				
 				/**
 				 * 未付款
@@ -145,29 +167,65 @@ public class OrderServiceImp implements OrderService {
 				/**
 				 * 总价减去优惠券价格
 				 */
+				myCoupon = myCouponDao.getMyCouponByCode(couponCode); 
 //				price -= 123;
+				
+				if (myCoupon == null) {
+					resultMap.put(DicCons.RESULT_CODE, 210);
+					resultMap.put(DicCons.RESULT_DESC, "优惠券不可用");
+					
+					return JsonBuilder.toJson(resultMap, callback);
+				} else {
+					price -= myCoupon.getCouponAmount();
+				}
 			}
 			
 			/**
 			 * 钱包余额
 			 */
-			
-			
-			/**
-			 * 支付地址
-			 */
-			if(payWay.equals(0)) {
+			myWallet = myWalletDao.getMyWallet(userCode);
+			if (myWallet == null) {
+				/**
+				 * 支付地址
+				 */
 				
 				resultMap.put("PayUrl", AlipayApi.getUrl(batch, subject.deleteCharAt(subject.length() - 1).toString(), String.format("%.2f", price), note));
+				resultMap.put(DicCons.RESULT_CODE, 220);
+				resultMap.put(DicCons.RESULT_DESC, "钱包余额不足，请充值");
 				
+				return JsonBuilder.toJson(resultMap, callback);
 			} else {
-				resultMap.put("PayUrl", AlipayApi.getUrl(batch, subject.deleteCharAt(subject.length() - 1).toString(), String.format("%.2f", price), note));
+				
+				if (price > myWallet.getWalletAmount()) {
+						
+					resultMap.put("PayUrl", AlipayApi.getUrl(batch, subject.deleteCharAt(subject.length() - 1).toString(), String.format("%.2f", price), note));
+					resultMap.put(DicCons.RESULT_CODE, 220);
+					resultMap.put(DicCons.RESULT_DESC, "钱包余额不足，请充值");
+					
+					return JsonBuilder.toJson(resultMap, callback);
+				} else {
+					
+					/**
+					 * 通过钱包扣款
+					 */
+					double balance = myWallet.getWalletAmount() - price;
+					
+					myWallet.setWalletAmount(balance);
+					myWallet.setWalletPledge(rprice);
+					myWallet.setWalletUpdDate(now);
+					
+					myWalletDao.updateMyWallet(myWallet);
+					
+					/**
+					 * 更改订单为支付状态
+					 */
+					orderDao.updateOrdersStatusToPay(batch);
+					
+					resultMap.put(DicCons.RESULT_CODE, 100);
+					resultMap.put(DicCons.RESULT_DESC, "支付成功");
+					return JsonBuilder.toJson(resultMap, callback);
+				}
 			}
-			
-			resultMap.put(DicCons.RESULT_CODE, 100);
-			resultMap.put(DicCons.RESULT_DESC, "数据添加成功");
-			
-			return JsonBuilder.toJson(resultMap, callback);
 			
 		} else {
 			

@@ -9,7 +9,7 @@
 	<result column="GS_UserCode" property="UserCode" />
 	<result column="GS_UserName" property="UserName" />
 	<result column="GS_CouponCode" property="CouponCode" />
-	<result column="GS_MyCouponCount" property="MyCouponCount" />
+	<result column="GS_CouponPrice" property="CouponAmount" />
 	<result column="GS_MyCouponEndDate" property="MyCouponEndDate" />
 	<result column="GS_MyCouponCrtDate" property="MyCouponCrtDate" />
 	<result column="GS_MyCouponNote" property="MyCouponNote" />
@@ -17,10 +17,15 @@
 </resultMap>
 
 <select id="getMyCoupon" parameterType="String" resultMap="resultListMyCoupon">
-	SELECT GS_MyCouponCode, GS_UserCode, GS_UserName, GS_CouponCode, GS_MyCouponCount, GS_MyCouponEndDate, GS_MyCouponCrtDate, GS_MyCouponNote, GS_MyCouponType
-	 From gs_mycoupon 
+	SELECT GS_MyCouponCode, GS_UserCode, GS_UserName, GS_CouponCode, GS_CouponPrice, GS_MyCouponEndDate, GS_MyCouponCrtDate, GS_MyCouponNote, GS_MyCouponType
+	 From gs_mycoupon, gs_coupon
 	 WHERE GS_UserCode = #{userCode} AND GS_MyCouponType = 'T' AND GS_MyCouponEndDate >= CURRENT_TIMESTAMP()
 </select> 
 
+<select id="getMyCouponByCode" parameterType="String" resultMap="resultListMyCoupon">
+	SELECT GS_MyCouponCode, GS_UserCode, GS_UserName, GS_CouponCode, GS_CouponPrice, GS_MyCouponEndDate, GS_MyCouponCrtDate, GS_MyCouponNote, GS_MyCouponType
+	 From gs_mycoupon, gs_coupon
+	 WHERE GS_MyCouponCode = #{couponCode} AND GS_MyCouponType = 'T' AND GS_MyCouponEndDate >= CURRENT_TIMESTAMP()
+</select> 
 
 </mapper>

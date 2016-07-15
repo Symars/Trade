@@ -3,53 +3,90 @@ package com.syhorde.gametime.vo;
 import com.google.gson.annotations.SerializedName;
 
 public class MyWallet {
+	
 	@SerializedName("WalletCode") 
 	private String walletCode;
 	@SerializedName("UserCode")
 	private String userCode;
 	@SerializedName("WalletAmount")
-	private String walletAmount;
+	private double walletAmount;
 	@SerializedName("WalletPledge")
-	private String walletPledge;
+	private double walletPledge;
 	@SerializedName("WalletCrtDate")
 	private String walletCrtDate;
 	@SerializedName("WalletUpdDate")
 	private String walletUpdDate;
-	public String getwalletCode(){
+	/**
+	 * @return the walletCode
+	 */
+	public String getWalletCode() {
 		return walletCode;
 	}
-	public void setwalletCode(String walletcode){
-		this.walletCode=walletcode;
+	/**
+	 * @param walletCode the walletCode to set
+	 */
+	public void setWalletCode(String walletCode) {
+		this.walletCode = walletCode;
 	}
-	public String getuserCode(){
+	/**
+	 * @return the userCode
+	 */
+	public String getUserCode() {
 		return userCode;
 	}
-	public void setuserCode(String usercode){
-		this.userCode=usercode;
+	/**
+	 * @param userCode the userCode to set
+	 */
+	public void setUserCode(String userCode) {
+		this.userCode = userCode;
 	}
-	public String getwalletAmount(){
+	/**
+	 * @return the walletAmount
+	 */
+	public double getWalletAmount() {
 		return walletAmount;
 	}
-	public void setwalletAmount(String walletamount){
-		this.walletAmount=walletamount;
+	/**
+	 * @param walletAmount the walletAmount to set
+	 */
+	public void setWalletAmount(double walletAmount) {
+		this.walletAmount = walletAmount;
 	}
-	public String getwalletPledge(){
+	/**
+	 * @return the walletPledge
+	 */
+	public double getWalletPledge() {
 		return walletPledge;
 	}
-	public void setwalletPledge(String walletpledge){
-		this.walletPledge=walletpledge;
+	/**
+	 * @param walletPledge the walletPledge to set
+	 */
+	public void setWalletPledge(double walletPledge) {
+		this.walletPledge = walletPledge;
 	}
-	public String getwalletCrtDate(){
+	/**
+	 * @return the walletCrtDate
+	 */
+	public String getWalletCrtDate() {
 		return walletCrtDate;
 	}
-	public void setwalletCrtDate(String walletcrtdate){
-		this.walletCrtDate=walletcrtdate;
+	/**
+	 * @param walletCrtDate the walletCrtDate to set
+	 */
+	public void setWalletCrtDate(String walletCrtDate) {
+		this.walletCrtDate = walletCrtDate;
 	}
-	public String getwalletUpdDate(){
+	/**
+	 * @return the walletUpdDate
+	 */
+	public String getWalletUpdDate() {
 		return walletUpdDate;
 	}
-	public void setwalletUpdDate(String walletupddate){
-		this.walletUpdDate=walletupddate;
+	/**
+	 * @param walletUpdDate the walletUpdDate to set
+	 */
+	public void setWalletUpdDate(String walletUpdDate) {
+		this.walletUpdDate = walletUpdDate;
 	}
 	
 }

@@ -1,5 +1,8 @@
 package com.syhorde.gametime.dao;
+import java.util.List;
+
 import com.syhorde.gametime.vo.MyCoupon;
 public interface MyCouponDao {
-	public MyCoupon getMyCoupon(String userCode);
+	public List<MyCoupon> getMyCoupon(String userCode);
+	public MyCoupon getMyCouponByCode(String myCouponCode);
 }
