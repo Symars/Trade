@@ -31,4 +31,14 @@ public class PayController {
 		response.getWriter().print(payService.payBack(request));
 		
 	}
+	
+	@RequestMapping(value = "/AlipayUpToVIP.trade", method = {RequestMethod.GET,RequestMethod.POST})  
+	@ResponseBody
+	public void payBackUpToVIP(HttpServletRequest request, HttpServletResponse response) throws IOException {
+		
+        response.setCharacterEncoding(DicCons.CHARACTER_ENCODE_DEFAULT);
+        response.setContentType(DicCons.CONTENT_TYPE_DEFAULT);  
+		response.getWriter().print(payService.payBack(request));
+		
+	}
 }

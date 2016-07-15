@@ -212,4 +212,13 @@ public class PayServiceImp implements PayService {
 		return null;
 	}
 
+
+
+	@Transactional
+	@Override
+	public String payBackUpToVIP(HttpServletRequest request) throws UnsupportedEncodingException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }

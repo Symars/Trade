@@ -24,4 +24,9 @@
 	WHERE GS_OrderUserCode = #{userCode} AND GS_OrderPrice = 0 AND GS_OrderType = 'R' AND GS_OrderStatus = 'R'
 </select>
 
+<insert id="insertUserVIP" parameterType="UserVIP">
+	INSERT INTO gs_vip(VIP_Code, GS_UserCode, VIP_StartDate, VIP_EndDate) VALUE
+	( #{vipCode}, #{userCode}, #{startDate}, #{endDate} )
+</insert>
+
 </mapper>

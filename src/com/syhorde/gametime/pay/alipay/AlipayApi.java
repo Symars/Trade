@@ -9,6 +9,7 @@ public class AlipayApi {
 		return AlipaySubmit.buildRequestUrl(pushParams(out_trade_no, subject, total_fee, body, userCode));
 	}
 	
+	
 	/**
 	 * 
 	 * @param out_trade_no	商户订单号，商户网站订单系统中唯一订单号，必填

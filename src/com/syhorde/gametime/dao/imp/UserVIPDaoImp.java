@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.syhorde.gametime.dao.UserVIPDao;
+import com.syhorde.gametime.vo.UserVIP;
 
 @Repository("userVIPDao")
 public class UserVIPDaoImp implements UserVIPDao{
@@ -29,6 +30,13 @@ public class UserVIPDaoImp implements UserVIPDao{
 		// TODO Auto-generated method stub
 		SqlSession session = sqlSessionFactory.openSession();
 		return session.selectOne("com.syhorde.gametime.dao.UserVIPDao.getCurrentRentOrder", userCode);
+	}
+
+	@Override
+	public void insertUserVIP(UserVIP userVIP) {
+		// TODO Auto-generated method stub
+		SqlSession session = sqlSessionFactory.openSession();
+		session.insert("com.syhorde.gametime.dao.UserVIPDao.insertUserVIP", userVIP);
 	}
 
 
