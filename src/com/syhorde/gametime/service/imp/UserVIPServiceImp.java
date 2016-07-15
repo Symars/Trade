@@ -9,23 +9,29 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import com.syhorde.gametime.dao.OrderDao;
 import com.syhorde.gametime.dao.UserVIPDao;
 import com.syhorde.gametime.json.JsonBuilder;
 import com.syhorde.gametime.service.UserVIPService;
 import com.syhorde.gametime.util.CommonUtil;
 import com.syhorde.gametime.util.DicCons;
+import com.syhorde.gametime.util.GUID;
 import com.syhorde.gametime.util.StringUtil;
-import com.syhorde.gametime.vo.UserVIP;
+import com.syhorde.gametime.vo.Order;
 
 @Service("userVIPService")
 public class UserVIPServiceImp implements UserVIPService {
 
 	@Autowired
 	private UserVIPDao userVIPDao;
+	@Autowired
+	private OrderDao orderDao;
 	
-	private UserVIP userVIP;
+	private Order order;
 	
+	@Transactional
 	@Override
 	public String upToVIP(HttpServletRequest request) {
 		// TODO Auto-generated method stub
@@ -59,6 +65,18 @@ public class UserVIPServiceImp implements UserVIPService {
 			 */
 			String now = LocalDateTime.now().format(DateTimeFormatter.ISO_DATE_TIME);
 			
+			String code = GUID.getUUID();
+			
+//			order = new Order();
+//
+//			String orderCode = GUID.getUUID();
+//			
+//			order.setOrderCode(orderCode);
+//			order.setOrderBatch(orderCode);
+//			order.setOrderName("年费会员");
+//			order.setOrderDate(now);
+//			order.setOrderPrice(perprice);
+//			order.setOrderNum(count);
 			
 			resultMap.put(DicCons.RESULT_CODE, 100);
 			resultMap.put(DicCons.RESULT_DESC, "数据加载成功");
