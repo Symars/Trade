@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC 
+"-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.syhorde.gametime.dao.MyWalletDao">
+
+<resultMap type="MyWallet" id="resultListMyWallet">
+	<result column="Wallet_Code" property="walletCode" />
+	<result column="GS_UserCode" property="userCode" />
+	<result column="Wallet_Amount" property="walletAmount" />
+	<result column="Wallet_Pledge" property="walletPledge" />
+	<result column="Wallet_CrtDate" property="walletCrtDate" />
+	<result column="Wallet_UpdDate" property="walletUpdDate" />
+</resultMap>
+
+<select id="getMyWallet" parameterType="String" resultMap="resultListMyWallet">
+	SELECT Wallet_Code, GS_UserCode, Wallet_Amount, Wallet_Pledge, Wallet_CrtDate, Wallet_UpdDate
+	 From gs_userwallet 
+	 WHERE GS_UserCode = #{userCode}
+</select> 
+
+
+</mapper>

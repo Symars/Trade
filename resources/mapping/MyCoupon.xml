@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC 
+"-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.syhorde.gametime.dao.MyCouponDao">
+
+<resultMap type="MyCoupon" id="resultListMyCoupon">
+	<result column="GS_MyCouponCode" property="MyCouponCode" />
+	<result column="GS_UserCode" property="UserCode" />
+	<result column="GS_UserName" property="UserName" />
+	<result column="GS_CouponCode" property="CouponCode" />
+	<result column="GS_MyCouponCount" property="MyCouponCount" />
+	<result column="GS_MyCouponEndDate" property="MyCouponEndDate" />
+	<result column="GS_MyCouponCrtDate" property="MyCouponCrtDate" />
+	<result column="GS_MyCouponNote" property="MyCouponNote" />
+	<result column="GS_MyCouponType" property="MyCouponType" />
+</resultMap>
+
+<select id="getMyCoupon" parameterType="String" resultMap="resultListMyCoupon">
+	SELECT GS_MyCouponCode, GS_UserCode, GS_UserName, GS_CouponCode, GS_MyCouponCount, GS_MyCouponEndDate, GS_MyCouponCrtDate, GS_MyCouponNote, GS_MyCouponType
+	 From gs_mycoupon 
+	 WHERE GS_UserCode = #{userCode} AND GS_MyCouponType = 'T' AND GS_MyCouponEndDate >= CURRENT_TIMESTAMP()
+</select> 
+
+
+</mapper>
