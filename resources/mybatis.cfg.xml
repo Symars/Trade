@@ -7,12 +7,20 @@
         <typeAlias alias="Category" type="com.syhorde.gametime.vo.Category"/> 
         <typeAlias alias="Booking" type="com.syhorde.gametime.vo.Booking"/> 
         <typeAlias alias="UserVIP" type="com.syhorde.gametime.vo.UserVIP"/> 
+        <typeAlias alias="MyCoupon" type="com.syhorde.gametime.vo.MyCoupon"/> 
+        <typeAlias alias="MyWallet" type="com.syhorde.gametime.vo.MyWallet"/>
+        <typeAlias alias="MyCash" type="com.syhorde.gametime.vo.MyCash"/> 
+        <typeAlias alias="MyTrade" type="com.syhorde.gametime.vo.MyTrade"/> 
     </typeAliases>   
       
     <mappers>  
         <mapper resource="mapping/Category.xml"/>  
         <mapper resource="mapping/Booking.xml"/>  
         <mapper resource="mapping/UserVIP.xml"/>  
+        <mapper resource="mapping/MyCoupon.xml"/>  
+        <mapper resource="mapping/MyWallet.xml"/>  
+        <mapper resource="mapping/MyCash.xml"/> 
+        <mapper resource="mapping/MyTrade.xml"/> 
     </mappers>  
    
 </configuration>  

@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC 
+"-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.syhorde.gametime.dao.MyTradeDao">
+
+<resultMap type="MyTrade" id="resultListMyTrade">
+	<result column="Trade_Code" property="TradeCode" />
+	<result column="GS_UserCode" property="UserCode" />
+	<result column="Order_Code" property="OrderCode" />
+	<result column="Trade_Type" property="TradeType" />
+	<result column="Trade_Amount" property="TradeAmount" />
+	<result column="Trade_CrtDate" property="TradeCrtDate" />
+	<result column="Trade_UpdDate" property="TradeUpdDate" />
+	
+</resultMap>
+
+<select id="getMyTrade" parameterType="String" resultMap="resultListMyTrade">
+	SELECT Trade_Code, GS_UserCode, Order_Code, Trade_Type,Trade_Amount,Trade_CrtDate,Trade_UpdDate
+	 From gs_usertrade
+	 WHERE GS_UserCode = #{userCode}
+</select> 
+<insert id="insertMyTrade" parameterType="MyTrade">
+		insert into
+		gs_usertrade(Trade_Code,
+                       GS_UserCode,
+                       Order_Code,
+                       Trade_Type,
+                       Trade_Amount,
+                       Trade_CrtDate,
+                       Trade_UpdDate)
+		values(#{TradeCode},#{UserCode},#{OrderCode},
+		#{TradeType},#{TradeAmount},#{TradeCrtDate},#{TradeUpdDate})
+</insert>
+
+
+</mapper>

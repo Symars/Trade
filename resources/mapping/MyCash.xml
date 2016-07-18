@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC 
+"-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.syhorde.gametime.dao.MyCashDao">
+
+<resultMap type="MyCash" id="resultListMyCash">
+	<result column="Cash_Code" property="CashCode" />
+	<result column="GS_UserCode" property="UserCode" />
+	<result column="Cash_Type" property="CashType" />
+	<result column="Cash_Amount" property="CashAmount" />
+	<result column="Cash_CrtDate" property="CashCrtDate" />
+</resultMap>
+
+<select id="getMyCash" parameterType="String" resultMap="resultListMyCash">
+	SELECT Cash_Code,GS_UserCode,Cash_Type,Cash_Amount,Cash_CrtDate
+	 From gs_usercash 
+	 WHERE GS_UserCode = #{userCode}
+</select> 
+<insert id="insertMyCash" parameterType="MyCash">
+		insert into
+		gs_usercash(Cash_Code,
+                       GS_UserCode,
+                       Cash_Type,
+                       Cash_Amount,
+                       Cash_CrtDate)
+		values(#{CashCode},#{UserCode},#{CashType},
+		#{CashAmount},#{CashCrtDate})
+</insert>
+
+
+</mapper>
