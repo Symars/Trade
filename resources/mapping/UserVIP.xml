@@ -18,6 +18,12 @@
 	WHERE GS_UserCode = #{userCode} AND VIP_EndDate > CURRENT_TIMESTAMP()
 </select>
 
+<select id="getUserVIPInfo" parameterType="String" resultMap="resultListUserVIP">
+	SELECT VIP_Code, GS_UserCode, VIP_StartDate, VIP_EndDate
+	FROM gs_vip
+	WHERE GS_UserCode = #{userCode} AND VIP_EndDate > CURRENT_TIMESTAMP()
+</select>
+
 <select id="getCurrentRentOrder" parameterType="String" resultType="int">
 	SELECT COUNT(1)
 	FROM gs_order

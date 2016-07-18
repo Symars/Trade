@@ -12,7 +12,7 @@ public class MyTrade {
 	@SerializedName("TradeType")
 	private String TradeType;
 	@SerializedName("TradeAmount")
-	private String TradeAmount;
+	private Double TradeAmount;
 	@SerializedName("StartDate")
 	private String TradeCrtDate;
 	@SerializedName("EndDate")
@@ -41,10 +41,10 @@ public class MyTrade {
 	public void setTradeType(String tradetype){
 		this.TradeType=tradetype;
 	}
-	public String getTradeAmount(){
+	public Double getTradeAmount(){
 		return TradeAmount;
 	}
-	public void setTradeAmount(String tradeamount){
+	public void setTradeAmount(Double tradeamount){
 		this.TradeAmount=tradeamount;
 	}
 	public String getTradeCrtDate(){

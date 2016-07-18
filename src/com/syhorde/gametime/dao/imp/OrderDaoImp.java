@@ -68,6 +68,14 @@ public class OrderDaoImp implements OrderDao {
 	}
 	
 	@Override
+	public void updateOrdersStatusToFinish(String batch) {
+		// TODO Auto-generated method stub
+		SqlSession session = sqlSessionFactory.openSession();
+		session.update("com.syhorde.gametime.dao.OrderDao.updateOrdersStatusToFinish", batch);
+		session.commit();
+	}
+	
+	@Override
 	public void updateOrderStatus(Map<String, Object> params) {
 		// TODO Auto-generated method stub
 		SqlSession session = sqlSessionFactory.openSession();

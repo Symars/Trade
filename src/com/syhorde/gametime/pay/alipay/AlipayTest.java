@@ -32,7 +32,7 @@ public class AlipayTest {
         sParaTemp.put("seller_id", AlipayConfig.seller_id);
         sParaTemp.put("_input_charset", AlipayConfig.input_charset);
 		sParaTemp.put("payment_type", AlipayConfig.payment_type);
-		sParaTemp.put("notify_url", AlipayConfig.notify_url);
+		sParaTemp.put("notify_url", AlipayConfig.notify_url_order);
 		sParaTemp.put("return_url", AlipayConfig.return_url);
 		sParaTemp.put("anti_phishing_key", AlipayConfig.anti_phishing_key);
 		sParaTemp.put("exter_invoke_ip", AlipayConfig.exter_invoke_ip);

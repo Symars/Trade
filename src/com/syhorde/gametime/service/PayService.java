@@ -9,5 +9,7 @@ public interface PayService {
 	public String payBack(HttpServletRequest request) throws UnsupportedEncodingException;
 
 	public String payBackUpToVIP(HttpServletRequest request) throws UnsupportedEncodingException;
+
+	public String payBackBuyUsed(HttpServletRequest request) throws UnsupportedEncodingException;
 	
 }

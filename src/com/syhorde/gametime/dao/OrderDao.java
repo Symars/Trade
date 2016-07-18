@@ -20,5 +20,7 @@ public interface OrderDao {
 	public void updateOrderStatus(Map<String, Object> params);
 
 	public void updateOrdersStatusToPay(String batch);
+
+	public void updateOrdersStatusToFinish(String batch);
 	
 }

@@ -38,7 +38,17 @@ public class PayController {
 		
         response.setCharacterEncoding(DicCons.CHARACTER_ENCODE_DEFAULT);
         response.setContentType(DicCons.CONTENT_TYPE_DEFAULT);  
-		response.getWriter().print(payService.payBack(request));
+		response.getWriter().print(payService.payBackUpToVIP(request));
+		
+	}
+	
+	@RequestMapping(value = "/AlipayBuyUsed.trade", method = {RequestMethod.GET,RequestMethod.POST})  
+	@ResponseBody
+	public void payBackBuyUsed(HttpServletRequest request, HttpServletResponse response) throws IOException {
+		
+        response.setCharacterEncoding(DicCons.CHARACTER_ENCODE_DEFAULT);
+        response.setContentType(DicCons.CONTENT_TYPE_DEFAULT);  
+		response.getWriter().print(payService.payBackBuyUsed(request));
 		
 	}
 }

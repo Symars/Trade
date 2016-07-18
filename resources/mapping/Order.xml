@@ -58,9 +58,15 @@
 	WHERE GS_OrderCode = #{OrderCode} AND GS_OrderStatus != 'R' AND GS_OrderStatus ! = 'P'
 </delete>
  	
-<update id="updateOrdersStatusToPay" parameterType="java.util.Map" >
+<update id="updateOrdersStatusToPay" parameterType="String" >
 	UPDATE gs_order
 	SET GS_OrderStatus = 'P'
+	WHERE GS_OrderBatch = #{OrderBatch}
+</update>
+
+<update id="updateOrdersStatusToFinish" parameterType="String" >
+	UPDATE gs_order
+	SET GS_OrderStatus = 'F'
 	WHERE GS_OrderBatch = #{OrderBatch}
 </update>
  

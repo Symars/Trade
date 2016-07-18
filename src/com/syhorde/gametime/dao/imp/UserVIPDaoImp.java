@@ -26,6 +26,12 @@ public class UserVIPDaoImp implements UserVIPDao{
 	}
 
 	@Override
+	public UserVIP getUserVIPInfo(String userCode) {
+		SqlSession session = sqlSessionFactory.openSession();
+		return session.selectOne("com.syhorde.gametime.dao.UserVIPDao.getUserVIPInfo", userCode);
+	}
+	
+	@Override
 	public int getCurrentRentOrder(String userCode) {
 		// TODO Auto-generated method stub
 		SqlSession session = sqlSessionFactory.openSession();

@@ -17,6 +17,8 @@ import com.syhorde.gametime.util.DicCons;
 @Scope("prototype")
 public class BuyUsedController {
 	
+	
+	
 	@RequestMapping(value = "/GI_BuyUsed.trade", method = {RequestMethod.GET,RequestMethod.POST})  
 	@ResponseBody
 	public void gnrtBooking(HttpServletRequest request, HttpServletResponse response) throws IOException {

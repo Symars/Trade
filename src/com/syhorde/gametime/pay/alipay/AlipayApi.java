@@ -5,8 +5,18 @@ import java.util.Map;
 
 public class AlipayApi {
 	
-	public static String getUrl(String out_trade_no, String subject, String total_fee, String body, String userCode) {
-		return AlipaySubmit.buildRequestUrl(pushParams(out_trade_no, subject, total_fee, body, userCode));
+	/**
+	 * 
+	 * @param out_trade_no	订单号
+	 * @param subject		名称
+	 * @param total_fee		金额
+	 * @param body			备注
+	 * @param userCode		用户编码
+	 * @param url			异步回调地址
+	 * @return
+	 */
+	public static String getUrl(String out_trade_no, String subject, String total_fee, String body, String userCode, String url) {
+		return AlipaySubmit.buildRequestUrl(pushParams(out_trade_no, subject, total_fee, body, userCode, url));
 	}
 	
 	
@@ -18,7 +28,7 @@ public class AlipayApi {
 	 * @param body			商品描述，可空
 	 * @return
 	 */
-	private static Map<String, String> pushParams(String out_trade_no, String subject, String total_fee, String body, String userCode){
+	private static Map<String, String> pushParams(String out_trade_no, String subject, String total_fee, String body, String userCode ,String url){
 		
 //		 //商户订单号，商户网站订单系统中唯一订单号，必填
 //       String out_trade_no = "tes123qwdfasv23sdx";
@@ -39,7 +49,7 @@ public class AlipayApi {
         sParaTemp.put("seller_id", AlipayConfig.seller_id);
         sParaTemp.put("_input_charset", AlipayConfig.input_charset);
 		sParaTemp.put("payment_type", AlipayConfig.payment_type);
-		sParaTemp.put("notify_url", AlipayConfig.notify_url);
+		sParaTemp.put("notify_url", url);
 		sParaTemp.put("return_url", AlipayConfig.return_url);
 		sParaTemp.put("anti_phishing_key", AlipayConfig.anti_phishing_key);
 		sParaTemp.put("exter_invoke_ip", AlipayConfig.exter_invoke_ip);

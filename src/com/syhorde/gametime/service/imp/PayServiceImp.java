@@ -40,73 +40,46 @@ public class PayServiceImp implements PayService {
 	
 	private MyCoupon myCoupon;
 	
+	//商户订单号
+	private String orderBatch;
 
-	@SuppressWarnings({ "unused", "rawtypes" })
+	//支付宝交易号
+	private String trade_no;
+
+	//交易状态
+	private String trade_status;
+	
+	//商品名称
+	private String subject;
+	
+	//支付类型
+	private String payment_type;
+	
+	//交易创建时间
+	private String gmt_create;
+	
+	
+	//交易付款时间
+	private String gmt_payment;
+	
+	//交易付款时间
+	private String gmt_close;
+
+	//交易金额
+	private String total_fee;
+	
+	//是否扫码支付
+	private String business_scene;
+	
+	//userCode
+	private String userCode;
+	
 	@Transactional
 	@Override
-	public String payBack(HttpServletRequest request) throws UnsupportedEncodingException {
+	public String payBack(HttpServletRequest request) throws UnsupportedEncodingException{
 		// TODO Auto-generated method stub
-		
 		Map<String,String> params = new HashMap<String,String>();
-		Map requestParams = request.getParameterMap();
-		for (Iterator iter = requestParams.keySet().iterator(); iter.hasNext();) {
-			String name = (String) iter.next();
-			String[] values = (String[]) requestParams.get(name);
-			String valueStr = "";
-			for (int i = 0; i < values.length; i++) {
-				valueStr = (i == values.length - 1) ? valueStr + values[i]
-						: valueStr + values[i] + ",";
-			}
-			//乱码解决，这段代码在出现乱码时使用。如果mysign和sign不相等也可以使用这段代码转化
-			//valueStr = new String(valueStr.getBytes("ISO-8859-1"), "gbk");
-			params.put(name, valueStr);
-		}
-		
-		//获取支付宝的通知返回参数，可参考技术文档中页面跳转同步通知参数列表(以下仅供参考)//
-		//商户订单号
-
-		String orderBatch = new String(request.getParameter("out_trade_no").getBytes("ISO-8859-1"),"UTF-8");
-
-		//支付宝交易号
-
-		String trade_no = new String(request.getParameter("trade_no").getBytes("ISO-8859-1"),"UTF-8");
-
-		//交易状态
-		
-		String trade_status = new String(request.getParameter("trade_status").getBytes("ISO-8859-1"),"UTF-8");
-		
-		//商品名称
-
-		String subject = new String(request.getParameter("subject").getBytes("ISO-8859-1"),"UTF-8");
-		
-		//支付类型
-		
-		String payment_type = new String(request.getParameter("payment_type").getBytes("ISO-8859-1"),"UTF-8");
-		
-		//交易创建时间
-		
-		String gmt_create = new String(request.getParameter("gmt_create").getBytes("ISO-8859-1"),"UTF-8");
-		
-		
-		//交易付款时间
-		
-		String gmt_payment = new String(request.getParameter("gmt_payment").getBytes("ISO-8859-1"),"UTF-8");
-		
-		//交易付款时间
-		
-		String gmt_close = new String(request.getParameter("gmt_close").getBytes("ISO-8859-1"),"UTF-8");
-
-		//交易金额
-		
-		String total_fee = new String(request.getParameter("total_fee").getBytes("ISO-8859-1"),"UTF-8");
-		
-		//是否扫码支付
-		
-		String business_scene = new String(request.getParameter("business_scene").getBytes("ISO-8859-1"),"UTF-8");
-		
-		//userCode
-		
-		String userCode = new String(request.getParameter("extra_common_param").getBytes("ISO-8859-1"),"UTF-8");
+		payBackParams(params, request);
 				
 		//获取支付宝的通知返回参数，可参考技术文档中页面跳转同步通知参数列表(以上仅供参考)//
 
@@ -216,9 +189,84 @@ public class PayServiceImp implements PayService {
 
 	@Transactional
 	@Override
-	public String payBackUpToVIP(HttpServletRequest request) throws UnsupportedEncodingException {
+	public String payBackUpToVIP(HttpServletRequest request) throws UnsupportedEncodingException{
 		// TODO Auto-generated method stub
+		Map<String,String> params = new HashMap<String,String>();
+		payBackParams(params, request);
 		return null;
+	}
+	
+	@Transactional
+	@Override
+	public String payBackBuyUsed(HttpServletRequest request) throws UnsupportedEncodingException{
+		// TODO Auto-generated method stub
+		Map<String,String> params = new HashMap<String,String>();
+		payBackParams(params, request);
+		return null;
+	}
+	
+	@SuppressWarnings("rawtypes")
+	private void payBackParams(Map<String,String> params, HttpServletRequest request) throws UnsupportedEncodingException{
+		
+		Map requestParams = request.getParameterMap();
+		for (Iterator iter = requestParams.keySet().iterator(); iter.hasNext();) {
+			String name = (String) iter.next();
+			String[] values = (String[]) requestParams.get(name);
+			String valueStr = "";
+			for (int i = 0; i < values.length; i++) {
+				valueStr = (i == values.length - 1) ? valueStr + values[i]
+						: valueStr + values[i] + ",";
+			}
+			//乱码解决，这段代码在出现乱码时使用。如果mysign和sign不相等也可以使用这段代码转化
+			//valueStr = new String(valueStr.getBytes("ISO-8859-1"), "gbk");
+			params.put(name, valueStr);
+		}
+		
+		//获取支付宝的通知返回参数，可参考技术文档中页面跳转同步通知参数列表(以下仅供参考)//
+		//商户订单号
+
+		orderBatch = new String(request.getParameter("out_trade_no").getBytes("ISO-8859-1"),"UTF-8");
+
+		//支付宝交易号
+
+		trade_no = new String(request.getParameter("trade_no").getBytes("ISO-8859-1"),"UTF-8");
+
+		//交易状态
+		
+		trade_status = new String(request.getParameter("trade_status").getBytes("ISO-8859-1"),"UTF-8");
+		
+		//商品名称
+
+		subject = new String(request.getParameter("subject").getBytes("ISO-8859-1"),"UTF-8");
+		
+		//支付类型
+		
+		payment_type = new String(request.getParameter("payment_type").getBytes("ISO-8859-1"),"UTF-8");
+		
+		//交易创建时间
+		
+		gmt_create = new String(request.getParameter("gmt_create").getBytes("ISO-8859-1"),"UTF-8");
+		
+		
+		//交易付款时间
+		
+		gmt_payment = new String(request.getParameter("gmt_payment").getBytes("ISO-8859-1"),"UTF-8");
+		
+		//交易付款时间
+		
+		gmt_close = new String(request.getParameter("gmt_close").getBytes("ISO-8859-1"),"UTF-8");
+
+		//交易金额
+		
+		total_fee = new String(request.getParameter("total_fee").getBytes("ISO-8859-1"),"UTF-8");
+		
+		//是否扫码支付
+		
+		business_scene = new String(request.getParameter("business_scene").getBytes("ISO-8859-1"),"UTF-8");
+		
+		//userCode
+		
+		userCode = new String(request.getParameter("extra_common_param").getBytes("ISO-8859-1"),"UTF-8");
 	}
 
 }

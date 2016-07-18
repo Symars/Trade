@@ -19,6 +19,7 @@ import com.syhorde.gametime.dao.OrderDao;
 import com.syhorde.gametime.dao.UserVIPDao;
 import com.syhorde.gametime.json.JsonBuilder;
 import com.syhorde.gametime.pay.alipay.AlipayApi;
+import com.syhorde.gametime.pay.alipay.AlipayConfig;
 import com.syhorde.gametime.service.OrderService;
 import com.syhorde.gametime.util.CommonUtil;
 import com.syhorde.gametime.util.DicCons;
@@ -215,7 +216,7 @@ public class OrderServiceImp implements OrderService {
 				myWallet.setWalletAmount(0);
 				myWallet.setWalletPledge(0);
 				myWalletDao.updateMyWallet(myWallet);
-				resultMap.put("PayUrl", AlipayApi.getUrl(batch, subject.deleteCharAt(subject.length() - 1).toString(), String.format("%.2f", price), note, userCode));
+				resultMap.put("PayUrl", AlipayApi.getUrl(batch, subject.deleteCharAt(subject.length() - 1).toString(), String.format("%.2f", price), note, userCode, AlipayConfig.notify_url_order));
 				resultMap.put(DicCons.RESULT_CODE, 220);
 				resultMap.put(DicCons.RESULT_DESC, "钱包余额不足，请充值");
 				
@@ -224,7 +225,7 @@ public class OrderServiceImp implements OrderService {
 				
 				if (price > myWallet.getWalletAmount()) {
 						
-					resultMap.put("PayUrl", AlipayApi.getUrl(batch, subject.deleteCharAt(subject.length() - 1).toString(), String.format("%.2f", price), note, userCode));
+					resultMap.put("PayUrl", AlipayApi.getUrl(batch, subject.deleteCharAt(subject.length() - 1).toString(), String.format("%.2f", price), note, userCode, AlipayConfig.notify_url_order));
 					resultMap.put(DicCons.RESULT_CODE, 220);
 					resultMap.put(DicCons.RESULT_DESC, "钱包余额不足，请充值");
 					
@@ -365,7 +366,7 @@ public class OrderServiceImp implements OrderService {
 				myWallet.setWalletPledge(0);
 				myWalletDao.updateMyWallet(myWallet);
 				
-				resultMap.put("PayUrl", AlipayApi.getUrl(batch, subject.deleteCharAt(subject.length() - 1).toString(), String.format("%.2f", price), note, userCode));
+				resultMap.put("PayUrl", AlipayApi.getUrl(batch, subject.deleteCharAt(subject.length() - 1).toString(), String.format("%.2f", price), note, userCode, AlipayConfig.notify_url_order));
 				resultMap.put(DicCons.RESULT_CODE, 220);
 				resultMap.put(DicCons.RESULT_DESC, "钱包余额不足，请充值");
 				
@@ -374,7 +375,7 @@ public class OrderServiceImp implements OrderService {
 				
 				if (price > myWallet.getWalletAmount()) {
 						
-					resultMap.put("PayUrl", AlipayApi.getUrl(batch, subject.deleteCharAt(subject.length() - 1).toString(), String.format("%.2f", price), note, userCode));
+					resultMap.put("PayUrl", AlipayApi.getUrl(batch, subject.deleteCharAt(subject.length() - 1).toString(), String.format("%.2f", price), note, userCode, AlipayConfig.notify_url_order));
 					resultMap.put(DicCons.RESULT_CODE, 220);
 					resultMap.put(DicCons.RESULT_DESC, "钱包余额不足，请充值");
 					
