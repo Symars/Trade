@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC 
+"-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.syhorde.gametime.dao.UserVIPDao">
+
+
+<select id="getUserVIP" parameterType="java.util.Map" resultType="double">
+	SELECT GS_ProductsItemRent
+	FROM gs_productsitem
+	WHERE GS_ProductsCode = #{ProductCode} AND GS_ProductsItemSeq = #{ProductItemCode}
+</select>
+
+</mapper>

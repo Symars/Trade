@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.syhorde.gametime.dao.MyCouponDao;
 import com.syhorde.gametime.dao.MyTradeDao;
 import com.syhorde.gametime.dao.MyWalletDao;
 import com.syhorde.gametime.dao.OrderDao;
@@ -23,6 +24,7 @@ import com.syhorde.gametime.util.CommonUtil;
 import com.syhorde.gametime.util.DicCons;
 import com.syhorde.gametime.util.GUID;
 import com.syhorde.gametime.util.StringUtil;
+import com.syhorde.gametime.vo.MyCoupon;
 import com.syhorde.gametime.vo.MyTrade;
 import com.syhorde.gametime.vo.MyWallet;
 import com.syhorde.gametime.vo.Order;
@@ -39,6 +41,10 @@ public class UserVIPServiceImp implements UserVIPService {
 	private MyWalletDao myWalletDao;
 	@Autowired
 	private MyTradeDao myTradeDao;
+	@Autowired
+	private MyCouponDao myCouponDao;
+	
+	private MyCoupon myCoupon;
 	
 	private MyTrade myTrade;
 	
@@ -60,6 +66,9 @@ public class UserVIPServiceImp implements UserVIPService {
 		if(CommonUtil.checkToken(token)){
 			
 			String userCode = request.getParameter(DicCons.USER_CODE);
+			
+			String coupon = request.getParameter("CouponCode");
+			
 			/**
 			 * 申请年数
 			 */
@@ -99,14 +108,27 @@ public class UserVIPServiceImp implements UserVIPService {
 			order.setOrderNum(count);
 			order.setOrderStatus("U");
 			order.setOrderType("B");
+			order.setCouponCode(coupon);
 			
 			order.setProductCode("");
 			order.setProductItemCode("");
 			order.setProductCode("0");
 			order.setOrderPriceCut(0.0);
 			order.setAddressCode("");
-			order.setCouponCode("");
 			order.setGoodsCode("");
+			
+			/**
+			 * 使用优惠券
+			 */
+			if(StringUtil.isNotEmpty(coupon)) {
+				/**
+				 * 总价减去优惠券价格
+				 */
+				myCoupon = myCouponDao.getMyCouponByCode(coupon);
+				if (myCoupon != null) {
+					price -= myCoupon.getCouponAmount();
+				}
+			}
 			
 			/**
 			 * 钱包余额
@@ -170,15 +192,28 @@ public class UserVIPServiceImp implements UserVIPService {
 					
 					userVIP = userVIPDao.getUserVIPInfo(userCode);
 					
-					String startDate = now;
+					LocalDateTime start = LocalDateTime.now();
+					
+					String startDate = start.toString();
 
 					String endDate = "";
 					
 					if(userVIP != null) {
-						endDate = userVIP.getEndDate() + "";
-					} else {
+						startDate = start.toString();
 						
+						endDate = LocalDateTime.parse(userVIP.getEndDate()).plusYears(count).toString();
+						
+						
+					} else {
+						endDate = start.plusYears(count).toString();
 					}
+					
+					userVIP.setVipCode(GUID.getUUID());
+					userVIP.setUserCode(userCode);
+					userVIP.setStartDate(startDate);
+					userVIP.setEndDate(endDate);
+					
+					userVIPDao.insertUserVIP(userVIP);
 					
 					/**
 					 * 更改订单为支付状态

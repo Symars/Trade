@@ -13,6 +13,8 @@ public interface OrderDao {
 	
 	public List<Order> getOrderByBatch(String batch);
 	
+	public Order getOrderByCode(String orderCode);
+	
 	public void deleteOrders(String batch);
 
 	public void deleteOrder(String orderCode);

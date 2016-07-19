@@ -2,9 +2,9 @@
 <!DOCTYPE mapper PUBLIC 
 "-//mybatis.org//DTD Mapper 3.0//EN" 
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.syhorde.gametime.dao.BookingDao">
+<mapper namespace="com.syhorde.gametime.dao.OrderDao">
 
-<resultMap type="Booking" id="resultListBooking">
+<resultMap type="Order" id="resultListOrder">
 	<result column="GS_OrderCode" property="orderCode" />
 	<result column="GS_OrderBatch" property="orderBatch" />
 	<result column="GS_OrderName" property="orderName" />
@@ -36,16 +36,22 @@
 	</foreach>
 </insert>
 
-<select id="getOrder" parameterType="java.util.Map" resultMap="resultListBooking">
+<select id="getOrder" parameterType="java.util.Map" resultMap="resultListOrder">
 	SELECT GS_OrderCode, GS_OrderBatch, GS_OrderName, GS_OrderStartDate, GS_OrderEndDate, GS_OrderDate, GS_OrderUserCode, GS_OrderUserName, GS_GoodsCode, GS_OrderPriceCut, GS_CouponCode, GS_AddressCode, GS_OrderPrice, GS_ProductsCode, GS_ProductItemCode, GS_OrderNum, GS_OrderType, GS_OrderNote, GS_OrderStatus
 	FROM　gs_order
 	WHERE GS_OrderBatch = #{OrderBatch} AND GS_OrderUserCode = #{UserCode}
 </select>
 
-<select id="getOrderByBatch" parameterType="java.util.Map" resultMap="resultListBooking">
+<select id="getOrderByBatch" parameterType="String" resultMap="resultListOrder">
 	SELECT GS_OrderCode, GS_OrderBatch, GS_OrderName, GS_OrderStartDate, GS_OrderEndDate, GS_OrderDate, GS_OrderUserCode, GS_OrderUserName, GS_GoodsCode, GS_OrderPriceCut, GS_CouponCode, GS_AddressCode, GS_OrderPrice, GS_ProductsCode, GS_ProductItemCode, GS_OrderNum, GS_OrderType, GS_OrderNote, GS_OrderStatus
 	FROM　gs_order
 	WHERE GS_OrderBatch = #{OrderBatch}
+</select>
+
+<select id="getOrderByCode" parameterType="String" resultMap="resultListOrder">
+	SELECT GS_OrderCode, GS_OrderBatch, GS_OrderName, GS_OrderStartDate, GS_OrderEndDate, GS_OrderDate, GS_OrderUserCode, GS_OrderUserName, GS_GoodsCode, GS_OrderPriceCut, GS_CouponCode, GS_AddressCode, GS_OrderPrice, GS_ProductsCode, GS_ProductItemCode, GS_OrderNum, GS_OrderType, GS_OrderNote, GS_OrderStatus
+	FROM　gs_order
+	WHERE GS_OrderCode = #{orderCode}
 </select>
 
 <delete id="deleteOrders" parameterType="String">

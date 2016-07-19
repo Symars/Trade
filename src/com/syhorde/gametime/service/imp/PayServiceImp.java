@@ -15,14 +15,19 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.syhorde.gametime.dao.MyCouponDao;
+import com.syhorde.gametime.dao.MyTradeDao;
 import com.syhorde.gametime.dao.MyWalletDao;
 import com.syhorde.gametime.dao.OrderDao;
+import com.syhorde.gametime.dao.UserVIPDao;
 import com.syhorde.gametime.pay.alipay.AlipayNotify;
 import com.syhorde.gametime.service.PayService;
+import com.syhorde.gametime.util.GUID;
 import com.syhorde.gametime.util.StringUtil;
 import com.syhorde.gametime.vo.MyCoupon;
+import com.syhorde.gametime.vo.MyTrade;
 import com.syhorde.gametime.vo.MyWallet;
 import com.syhorde.gametime.vo.Order;
+import com.syhorde.gametime.vo.UserVIP;
 
 @Service("payService")
 public class PayServiceImp implements PayService {
@@ -33,8 +38,18 @@ public class PayServiceImp implements PayService {
 	private MyWalletDao myWalletDao;
 	@Autowired
 	private MyCouponDao myCouponDao;
+	@Autowired
+	private MyTradeDao myTradeDao;
+	@Autowired
+	private UserVIPDao userVIPDao;
+	
+	private UserVIP userVIP;
+	
+	private MyTrade myTrade;
 	
 	private List<Order> orders;
+	
+	private Order order;
 	
 	private MyWallet myWallet;
 	
@@ -182,7 +197,7 @@ public class PayServiceImp implements PayService {
 			System.out.print("fail");
 		}
 		
-		return null;
+		return "succee";
 	}
 
 
@@ -193,7 +208,111 @@ public class PayServiceImp implements PayService {
 		// TODO Auto-generated method stub
 		Map<String,String> params = new HashMap<String,String>();
 		payBackParams(params, request);
-		return null;
+		
+		if(AlipayNotify.verify(params)){//验证成功
+			
+			if(trade_status.equals("TRADE_FINISHED")){
+
+			} else if (trade_status.equals("TRADE_SUCCESS")){
+				
+				/**
+				 * 获取当前时间
+				 */
+				String now = LocalDateTime.now().format(DateTimeFormatter.ISO_DATE_TIME);
+				
+				order = orderDao.getOrderByCode(orderBatch);
+				
+				int count = order.getOrderNum();
+				
+				double price = order.getOrderPrice() * count;
+
+				String couponCode = order.getCouponCode();
+				
+				
+				/**
+				 * 使用优惠券
+				 */
+				if(StringUtil.isNotEmpty(couponCode)) {
+					/**
+					 * 总价减去优惠券价格
+					 */
+					myCoupon = myCouponDao.getMyCouponByCode(couponCode); 
+					price -= myCoupon.getCouponAmount();
+				}
+				
+				myWallet = myWalletDao.getMyWallet(userCode);
+				
+				/**
+				 * 通过钱包扣款
+				 */
+				double balance = myWallet.getWalletAmount() + Double.valueOf(total_fee) - price;
+				
+				myWallet.setWalletAmount(balance);
+				myWallet.setWalletUpdDate(now);
+				
+				myWalletDao.updateMyWallet(myWallet);
+
+				/**
+				 * 添加用户u消费记录
+				 */
+				myTrade = new MyTrade();
+				
+				myTrade.setOrderCode(orderBatch);
+				myTrade.setTradeAmount(price);
+				myTrade.setTradeCode(GUID.getUUID());
+				myTrade.setTradeCrtDate(now);
+				myTrade.setTradeUpdDate(now);
+				myTrade.setTradeType("V");
+				myTrade.setUserCode(userCode);
+				
+				myTradeDao.insertMyTrade(myTrade);
+				
+				/**
+				 * 更新vip信息
+				 */
+				
+				userVIP = userVIPDao.getUserVIPInfo(userCode);
+				
+				LocalDateTime start = LocalDateTime.now();
+				
+				String startDate = start.toString();
+
+				String endDate = "";
+				
+				if(userVIP != null) {
+					startDate = start.toString();
+					
+					endDate = LocalDateTime.parse(userVIP.getEndDate()).plusYears(count).toString();
+					
+					
+				} else {
+					endDate = start.plusYears(count).toString();
+				}
+				
+				userVIP.setVipCode(GUID.getUUID());
+				userVIP.setUserCode(userCode);
+				userVIP.setStartDate(startDate);
+				userVIP.setEndDate(endDate);
+				
+				userVIPDao.insertUserVIP(userVIP);
+				
+				/**
+				 * 更改订单为支付状态
+				 */
+				orderDao.updateOrdersStatusToFinish(orderBatch);
+			}
+			
+
+			//——请根据您的业务逻辑来编写程序（以上代码仅作参考）——
+				
+			System.out.print("success");	//请不要修改或删除
+
+			//////////////////////////////////////////////////////////////////////////////////////////
+		}else{//验证失败
+			System.out.print("fail");
+		}
+		
+		return "success";
 	}
 	
 	@Transactional
@@ -202,7 +321,7 @@ public class PayServiceImp implements PayService {
 		// TODO Auto-generated method stub
 		Map<String,String> params = new HashMap<String,String>();
 		payBackParams(params, request);
-		return null;
+		return "succee";
 	}
 	
 	@SuppressWarnings("rawtypes")
