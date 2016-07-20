@@ -75,6 +75,12 @@
 	SET GS_OrderStatus = 'F'
 	WHERE GS_OrderBatch = #{OrderBatch}
 </update>
+
+<update id="updateOrdersToBuyUsed" parameterType="String" >
+	UPDATE gs_order
+	SET GS_OrderStatus = 'F', GS_OrderType = 'U'
+	WHERE GS_OrderBatch = #{OrderBatch}
+</update>
  
  <update id="updateOrderStatus" parameterType="java.util.Map" >
 	UPDATE gs_order

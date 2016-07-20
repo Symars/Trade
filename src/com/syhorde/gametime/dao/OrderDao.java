@@ -24,5 +24,7 @@ public interface OrderDao {
 	public void updateOrdersStatusToPay(String batch);
 
 	public void updateOrdersStatusToFinish(String batch);
+
+	public void updateOrdersToBuyUsed(String batch);
 	
 }

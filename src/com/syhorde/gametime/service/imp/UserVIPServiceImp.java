@@ -154,7 +154,7 @@ public class UserVIPServiceImp implements UserVIPService {
 
 				if (price > myWallet.getWalletAmount()) {
 					
-					resultMap.put("PayUrl", AlipayApi.getUrl(batch, name, String.format("%.2f", price), name, userCode, AlipayConfig.notify_url_vip));
+					resultMap.put("PayUrl", AlipayApi.getUrl(batch, name, String.format("%.2f", price - myWallet.getWalletAmount()), name, userCode, AlipayConfig.notify_url_vip));
 					resultMap.put(DicCons.RESULT_CODE, 220);
 					resultMap.put(DicCons.RESULT_DESC, "钱包余额不足，请充值");
 					

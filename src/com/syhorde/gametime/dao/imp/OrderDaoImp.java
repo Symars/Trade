@@ -90,4 +90,12 @@ public class OrderDaoImp implements OrderDao {
 		session.commit();
 	}
 
+	@Override
+	public void updateOrdersToBuyUsed(String batch) {
+		// TODO Auto-generated method stub
+		SqlSession session = sqlSessionFactory.openSession();
+		session.update("com.syhorde.gametime.dao.OrderDao.updateOrdersToBuyUsed", batch);
+		session.commit();
+	}
+
 }

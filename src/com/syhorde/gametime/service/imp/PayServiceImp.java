@@ -14,6 +14,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.syhorde.gametime.dao.BuyUsedDao;
+import com.syhorde.gametime.dao.MyCashDao;
 import com.syhorde.gametime.dao.MyCouponDao;
 import com.syhorde.gametime.dao.MyTradeDao;
 import com.syhorde.gametime.dao.MyWalletDao;
@@ -21,8 +23,10 @@ import com.syhorde.gametime.dao.OrderDao;
 import com.syhorde.gametime.dao.UserVIPDao;
 import com.syhorde.gametime.pay.alipay.AlipayNotify;
 import com.syhorde.gametime.service.PayService;
+import com.syhorde.gametime.util.DateUtil;
 import com.syhorde.gametime.util.GUID;
 import com.syhorde.gametime.util.StringUtil;
+import com.syhorde.gametime.vo.MyCash;
 import com.syhorde.gametime.vo.MyCoupon;
 import com.syhorde.gametime.vo.MyTrade;
 import com.syhorde.gametime.vo.MyWallet;
@@ -42,6 +46,12 @@ public class PayServiceImp implements PayService {
 	private MyTradeDao myTradeDao;
 	@Autowired
 	private UserVIPDao userVIPDao;
+	@Autowired
+	private BuyUsedDao buyUsedDao;
+	@Autowired
+	private MyCashDao myCashDao;
+	
+	private MyCash myCash;
 	
 	private UserVIP userVIP;
 	
@@ -120,7 +130,7 @@ public class PayServiceImp implements PayService {
 					
 				//注意：
 				//付款完成后，支付宝系统发送该交易状态通知
-				
+				myCash();
 				/**
 				 * 自定义业务逻辑代码块
 				 */
@@ -200,8 +210,6 @@ public class PayServiceImp implements PayService {
 		return "succee";
 	}
 
-
-
 	@Transactional
 	@Override
 	public String payBackUpToVIP(HttpServletRequest request) throws UnsupportedEncodingException{
@@ -214,7 +222,7 @@ public class PayServiceImp implements PayService {
 			if(trade_status.equals("TRADE_FINISHED")){
 
 			} else if (trade_status.equals("TRADE_SUCCESS")){
-				
+				myCash();
 				/**
 				 * 获取当前时间
 				 */
@@ -321,7 +329,105 @@ public class PayServiceImp implements PayService {
 		// TODO Auto-generated method stub
 		Map<String,String> params = new HashMap<String,String>();
 		payBackParams(params, request);
+		
+		if(AlipayNotify.verify(params)){//验证成功
+			
+			if(trade_status.equals("TRADE_FINISHED")){
+
+			} else if (trade_status.equals("TRADE_SUCCESS")){
+				
+				myCash();
+				
+				/**
+				 * 获取当前时间
+				 */
+				LocalDateTime now = LocalDateTime.now();
+								
+				order = orderDao.getOrderByCode(orderBatch);
+				
+				Map<String, Object> paramsPro = new HashMap<String, Object>();
+				
+				paramsPro.put("ProductCode", order.getProductCode());
+				paramsPro.put("ProductItemCode", order.getProductItemCode());
+				
+				double perRentPrice = buyUsedDao.getRentPrice(paramsPro);
+				
+				LocalDateTime startDate = LocalDateTime.parse(order.getOrderStartDate());
+				
+				int days = DateUtil.diffDateTime(startDate, now);
+				
+				String subject = order.getOrderName() + "购买二手";
+				
+				/**
+				 * 租金
+				 */
+				double rentPrice = perRentPrice * days;
+				
+				/**
+				 * 二手价格,押金价格
+				 */
+				double price = order.getOrderPrice();
+				
+				/**
+				 * 钱包余额
+				 */
+				myWallet = myWalletDao.getMyWallet(userCode);
+				
+				/**
+				 * 通过钱包扣款
+				 */
+				double balance = myWallet.getWalletAmount() - price - rentPrice;
+				
+				myWallet.setWalletAmount(balance);
+				myWallet.setWalletUpdDate(now.toString());
+				
+				myWalletDao.updateMyWallet(myWallet);
+				
+				/**
+				 * 添加用户u消费记录
+				 */
+				myTrade = new MyTrade();
+				
+				myTrade.setOrderCode(orderBatch);
+				myTrade.setTradeAmount(price + rentPrice);
+				myTrade.setTradeCode(GUID.getUUID());
+				myTrade.setTradeCrtDate(now.toString());
+				myTrade.setTradeUpdDate(now.toString());
+				myTrade.setTradeType("V");
+				myTrade.setUserCode(userCode);
+				
+				myTradeDao.insertMyTrade(myTrade);
+				
+				/**
+				 * 更改订单为支付状态
+				 */
+				orderDao.updateOrdersToBuyUsed(orderBatch);
+			}
+			
+
+			//——请根据您的业务逻辑来编写程序（以上代码仅作参考）——
+				
+			System.out.print("success");	//请不要修改或删除
+
+			//////////////////////////////////////////////////////////////////////////////////////////
+		}else{//验证失败
+			System.out.print("fail");
+		}
+
 		return "succee";
+	}
+	
+	private void myCash() {
+		myCash = new MyCash();
+		
+		myCash.setCashCode(GUID.getUUID());
+		myCash.setUserCode(userCode);
+		myCash.setCashAmount(total_fee);
+		myCash.setCashType("A");
+		myCash.setCashCrtDate(LocalDateTime.now().toString());
+		
+		myCashDao.insertMyCash(myCash);
+		
 	}
 	
 	@SuppressWarnings("rawtypes")

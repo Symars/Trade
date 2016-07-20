@@ -225,7 +225,7 @@ public class OrderServiceImp implements OrderService {
 				
 				if (price > myWallet.getWalletAmount()) {
 						
-					resultMap.put("PayUrl", AlipayApi.getUrl(batch, subject.deleteCharAt(subject.length() - 1).toString(), String.format("%.2f", price), note, userCode, AlipayConfig.notify_url_order));
+					resultMap.put("PayUrl", AlipayApi.getUrl(batch, subject.deleteCharAt(subject.length() - 1).toString(), String.format("%.2f", price - myWallet.getWalletAmount()), note, userCode, AlipayConfig.notify_url_order));
 					resultMap.put(DicCons.RESULT_CODE, 220);
 					resultMap.put(DicCons.RESULT_DESC, "钱包余额不足，请充值");
 					
