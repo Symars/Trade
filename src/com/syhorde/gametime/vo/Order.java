@@ -1,43 +1,64 @@
 package com.syhorde.gametime.vo;
 
+import com.google.gson.annotations.SerializedName;
+
 public class Order {
 	
+	@SerializedName("OrderCode")
 	private String orderCode;
 	
+	@SerializedName("OrderBatch")
 	private String orderBatch;
 	
+	@SerializedName("OrderName")
 	private String orderName;
 	
+	@SerializedName("StartDate")
 	private String orderStartDate;
 	
+	@SerializedName("EndDate")
 	private String orderEndDate;
 	
+	@SerializedName("OrderDate")
 	private String orderDate;
 	
+	@SerializedName("UserCode")
 	private String userCode;
 	
+	@SerializedName("UserName")
 	private String userName;
 	
+	@SerializedName("GoodsCode")
 	private String goodsCode;
 	
+	@SerializedName("Price")
 	private Double OrderPrice;
 	
+	@SerializedName("Num")
 	private int OrderNum;
 	
+	@SerializedName("CouponCode")
 	private String CouponCode;
 	
+	@SerializedName("AddressCode")
 	private String AddressCode;
 	
+	@SerializedName("PriceCut")
 	private Double OrderPriceCut;
 	
+	@SerializedName("ProductCode")
 	private String ProductCode;
 	
+	@SerializedName("ProductItemCode")
 	private String ProductItemCode;
 	
+	@SerializedName("Type")
 	private String OrderType;
 	
+	@SerializedName("OrderNote")
 	private String OrderNote;
 	
+	@SerializedName("OrderStatus")
 	private String OrderStatus;
 
 	/**

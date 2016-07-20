@@ -60,8 +60,8 @@
 </update>
 
 <update id="updateBookingStatusToO" parameterType="String">
-	UPDATE GS_BookingStatus
-	SET GS_GoodsStatus = 'O'
+	UPDATE gs_booking
+	SET GS_BookingStatus = 'O'
 	WHERE GS_BookingBatch = #{batch}
 </update>
 

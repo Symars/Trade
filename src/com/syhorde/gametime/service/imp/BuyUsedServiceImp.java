@@ -120,7 +120,7 @@ public class BuyUsedServiceImp implements BuyUsedService {
 					myTrade.setTradeCode(GUID.getUUID());
 					myTrade.setTradeCrtDate(now.toString());
 					myTrade.setTradeUpdDate(now.toString());
-					myTrade.setTradeType("V");
+					myTrade.setTradeType("U");
 					myTrade.setUserCode(userCode);
 					
 					myTradeDao.insertMyTrade(myTrade);

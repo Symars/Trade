@@ -181,6 +181,11 @@ public class OrderServiceImp implements OrderService {
 			orderDao.gnrtOrder(orders);
 			
 			/**
+			 * 更改预订单状态
+			 */
+			bookingDao.updateBookingStatusToO(bookingBatch);
+			
+			/**
 			 * 使用优惠券
 			 */
 			if(StringUtil.isNotEmpty(couponCode)) {
@@ -432,7 +437,7 @@ public class OrderServiceImp implements OrderService {
 			
 			orders = orderDao.getOrder(params);
 			
-			resultMap.put("OrderList", orders);
+			resultMap.put("List", orders);
 			
 			resultMap.put(DicCons.RESULT_CODE, 100);
 			resultMap.put(DicCons.RESULT_DESC, "数据加载成功");

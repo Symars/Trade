@@ -72,7 +72,7 @@ public class UserVIPServiceImp implements UserVIPService {
 			/**
 			 * 申请年数
 			 */
-			String num = request.getParameter("num");
+			String num = request.getParameter("Count");
 			
 			double perprice = 1000;
 			
@@ -107,7 +107,7 @@ public class UserVIPServiceImp implements UserVIPService {
 			order.setOrderPrice(perprice);
 			order.setOrderNum(count);
 			order.setOrderStatus("U");
-			order.setOrderType("B");
+			order.setOrderType("V");
 			order.setCouponCode(coupon);
 			
 			order.setProductCode("");
