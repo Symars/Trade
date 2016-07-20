@@ -147,8 +147,8 @@ public class BookingServiceImp implements BookingService{
 						booking.setBookingCode(GUID.getUUID());
 						booking.setUserCode(userCode);
 						booking.setBookingDate(now);
-						booking.setBookingStartTime(now);
-						booking.setBookingEndTime(now);
+						booking.setBookingStartDate(now);
+						booking.setBookingEndDate(now);
 						booking.setProductCode(productCode);
 						booking.setProductItemCode(ProductItemCode);
 						booking.setBookingPrice(price);
@@ -205,13 +205,13 @@ public class BookingServiceImp implements BookingService{
 					booking.setBookingCode(GUID.getUUID());
 					booking.setUserCode(userCode);
 					booking.setBookingDate(now);
-					booking.setBookingStartTime(now);
-					booking.setBookingEndTime(now);
+					booking.setBookingStartDate(now);
+					booking.setBookingEndDate(now);
 					booking.setProductCode(productCode);
 					booking.setProductItemCode(ProductItemCode);
 					booking.setBookingPrice(price);
 					booking.setBookingNum(num);
-					booking.setBookingStatus("0");
+					booking.setBookingStatus("B");
 					booking.setBookingType(type);
 					bookings.add(booking);
 					
@@ -222,6 +222,7 @@ public class BookingServiceImp implements BookingService{
 			
 			bookingDao.lockGoods(goodsCodes);
 			
+			resultMap.put("BookingBatch", batch);
 			resultMap.put(DicCons.RESULT_CODE, 100);
 			resultMap.put(DicCons.RESULT_DESC, "数据添加成功");
 			
@@ -244,7 +245,7 @@ public class BookingServiceImp implements BookingService{
 
 		Map<String, Object> resultMap= new HashMap<String, Object>();
 		
-		if(CommonUtil.checkToken(token)){
+		if(CommonUtil.checkToken(token)){ 
 			
 			Map<String, Object> params = new HashMap<String, Object>();
 			
@@ -255,7 +256,7 @@ public class BookingServiceImp implements BookingService{
 			bookings = bookingDao.getBooking(params);
 			
 			resultMap.put("List", bookings);
-			
+			resultMap.put("BookingBatch", request.getParameter("BookingBatch"));
 			resultMap.put(DicCons.RESULT_CODE, 100);
 			resultMap.put(DicCons.RESULT_DESC, "数据加载成功");
 			

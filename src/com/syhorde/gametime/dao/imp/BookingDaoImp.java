@@ -57,4 +57,12 @@ public class BookingDaoImp implements BookingDao {
 		session.commit();
 	}
 
+	@Override
+	public void updateBookingStatusToO(String batch) {
+		// TODO Auto-generated method stub
+		SqlSession session = sqlSessionFactory.openSession();
+		session.update("com.syhorde.gametime.dao.BookingDao.updateBookingStatusToO", batch);
+		session.commit();
+	}
+
 }

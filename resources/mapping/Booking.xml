@@ -5,22 +5,35 @@
 <mapper namespace="com.syhorde.gametime.dao.BookingDao">
 
 <resultMap type="Booking" id="resultListBooking">
+	<result column="GS_BookingBatch" property="bookingBatch" />
 	<result column="GS_BookingCode" property="bookingCode" />
 	<result column="GS_BookingName" property="bookingName" />
+	<result column="GS_BookingStartDate" property="bookingStartDate" />
+	<result column="GS_BookingEndDate" property="bookingEndDate" />
+	<result column="GS_BookingDate" property="bookingDate" />
+	<result column="GS_BookingUserCode" property="userCode" />
+	<result column="GS_BookingUserName" property="userName" />
+	<result column="GS_BookingPrice" property="bookingPrice" />
+	<result column="GS_BookingNum" property="bookingNum" />
+	<result column="GS_ProductsCode" property="productCode" />
+	<result column="GS_ProductItemCode" property="productItemCode" />
+	<result column="GS_BookingNote" property="bookingNote" />
+	<result column="GS_BookingType" property="bookingType" />
+	<result column="GS_BookingStatus" property="bookingStatus" />
 </resultMap>
 
 <select id="getBooking" parameterType="java.util.Map" resultMap="resultListBooking">
-	SELECT GS_BookingCode, GS_BookingBatch, GS_BookingName, GS_BookingStartDate, GS_BookingEndDate, GS_BookingDate, GS_BookingUserCode, GS_BookingUserName, GS_BookingPrice, GS_ProductsCode, GS_ProductItemCode, GS_BookingNote, GS_BookingType, GS_BookingStatus
+	SELECT GS_BookingCode, GS_BookingBatch, GS_BookingName, GS_BookingStartDate, GS_BookingEndDate, GS_BookingDate, GS_BookingUserCode, GS_BookingUserName, GS_BookingPrice, GS_BookingNum, GS_ProductsCode, GS_ProductItemCode, GS_GoodsCode, GS_BookingNote, GS_BookingType, GS_BookingStatus
 	From gs_booking
 	WHERE GS_BookingUserCode = #{userCode} AND GS_BookingDate >= #{date} AND GS_BookingBatch = #{batch}
 </select> 
 
 <insert id="gnrtBooking" parameterType="java.util.List">
 	INSERT INTO gs_booking
-	(GS_BookingCode, GS_BookingBatch, GS_BookingName, GS_BookingStartDate, GS_BookingEndDate, GS_BookingDate, GS_BookingUserCode, GS_BookingUserName, GS_BookingPrice, GS_ProductsCode, GS_ProductItemCode, GS_BookingNote, GS_BookingType, GS_BookingStatus)
+	(GS_BookingCode, GS_BookingBatch, GS_BookingName, GS_BookingStartDate, GS_BookingEndDate, GS_BookingDate, GS_BookingUserCode, GS_BookingUserName, GS_BookingPrice, GS_BookingNum, GS_ProductsCode, GS_ProductItemCode, GS_GoodsCode, GS_BookingNote, GS_BookingType, GS_BookingStatus)
 	VALUES
 	<foreach item="item" collection="list" open="" separator="," close="">
-		(#{item.bookingCode}, #{item.bookingBatch}, #{item.bookingName}, #{item.bookingStartDate}, #{item.bookingEndDate}, #{item.bookingDate}, #{item.userCode}, #{item.userName},, #{item.bookingPrice}, #{item.productCode}, #{item.productItemCode}, #{item.bookingNote}, #{item.bookingType}, , #{item.GS_BookingStatus})
+		(#{item.bookingBatch}, #{item.bookingCode}, #{item.bookingName}, #{item.bookingStartDate}, #{item.bookingEndDate}, #{item.bookingDate}, #{item.userCode}, #{item.userName}, #{item.bookingPrice}, #{item.bookingNum}, #{item.productCode}, #{item.productItemCode}, #{item.bookingNote}, #{item.bookingType}, #{item.bookingStatus})
 	</foreach>
 </insert>
 
@@ -44,6 +57,12 @@
 	<foreach collection="list" item="item" index="index" open="(" separator="," close=")" >  
         #{item}  
     </foreach>		
+</update>
+
+<update id="updateBookingStatusToO" parameterType="String">
+	UPDATE GS_BookingStatus
+	SET GS_GoodsStatus = 'O'
+	WHERE GS_BookingBatch = #{batch}
 </update>
 
 </mapper>

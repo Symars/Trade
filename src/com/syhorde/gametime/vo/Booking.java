@@ -1,35 +1,52 @@
 package com.syhorde.gametime.vo;
 
+import com.google.gson.annotations.SerializedName;
+
 public class Booking {
 	
+	@SerializedName("BookingBatch")
 	private String bookingBatch;
 	
+	@SerializedName("BookingCode")
 	private String bookingCode;
 	
+	@SerializedName("BookingName")
 	private String bookingName;
 	
-	private String bookingStartTime;
+	@SerializedName("StartDate")
+	private String bookingStartDate;
 	
-	private String bookingEndTime;
+	@SerializedName("EndDate")
+	private String bookingEndDate;
 	
+	@SerializedName("BookingDate")
 	private String bookingDate;
 	
+	@SerializedName("UserCode")
 	private String userCode;
 	
+	@SerializedName("UserName")
 	private String userName;
 	
+	@SerializedName("Price")
 	private Double bookingPrice;
 	
+	@SerializedName("Num")
 	private int bookingNum;
 	
+	@SerializedName("ProductCode")
 	private String productCode; 
 	
+	@SerializedName("ProductItemCode")
 	private String productItemCode;
 	
+	@SerializedName("BookingNote")
 	private String bookingNote;
 	
+	@SerializedName("Type")
 	private String bookingType;
 	
+	@SerializedName("BookingStatus")
 	private String bookingStatus;
 
 	/**
@@ -75,31 +92,31 @@ public class Booking {
 	}
 
 	/**
-	 * @return the bookingStartTime
+	 * @return the bookingStartDate
 	 */
-	public String getBookingStartTime() {
-		return bookingStartTime;
+	public String getBookingStartDate() {
+		return bookingStartDate;
 	}
 
 	/**
-	 * @param bookingStartTime the bookingStartTime to set
+	 * @param bookingStartDate the bookingStartDate to set
 	 */
-	public void setBookingStartTime(String bookingStartTime) {
-		this.bookingStartTime = bookingStartTime;
+	public void setBookingStartDate(String bookingStartDate) {
+		this.bookingStartDate = bookingStartDate;
 	}
 
 	/**
-	 * @return the bookingEndTime
+	 * @return the bookingEndDate
 	 */
-	public String getBookingEndTime() {
-		return bookingEndTime;
+	public String getBookingEndDate() {
+		return bookingEndDate;
 	}
 
 	/**
-	 * @param bookingEndTime the bookingEndTime to set
+	 * @param bookingEndDate the bookingEndDate to set
 	 */
-	public void setBookingEndTime(String bookingEndTime) {
-		this.bookingEndTime = bookingEndTime;
+	public void setBookingEndDate(String bookingEndDate) {
+		this.bookingEndDate = bookingEndDate;
 	}
 
 	/**
@@ -241,4 +258,6 @@ public class Booking {
 	public void setBookingStatus(String bookingStatus) {
 		this.bookingStatus = bookingStatus;
 	}
+
+	
 }

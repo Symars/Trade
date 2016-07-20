@@ -16,4 +16,6 @@ public interface BookingDao {
 	public List<String> getGoodsCode(Map<String, Object> params);
 	
 	public void lockGoods (List<String> goodsCodes);
+	
+	public void updateBookingStatusToO(String batch);
 }
