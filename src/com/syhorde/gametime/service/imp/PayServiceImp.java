@@ -417,6 +417,7 @@ public class PayServiceImp implements PayService {
 		return "succee";
 	}
 	
+	
 	private void myCash() {
 		myCash = new MyCash();
 		
